@@ -3,27 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Language" content="en, ru" />
   <title id="pageTitle">Create Aeronautics | Minecraft Server</title>
-  <meta name="keywords" content="Create Aeronautics server, Minecraft 1.21.1, NeoForge, Create mod, Aeronautics mod, Minecraft aeronautics mod multiplayer, best Create Aeronautics server, real flight physics, airships, mechanical engineering, chill community, no griefing, Minecraft server, Minecraft multiplayer, Minecraft server ru, Minecraft server eng, Create Aeronautics server ru, Create Aeronautics server en" />
+  <meta name="keywords" content="Create Aeronautics, Minecraft сервер, 1.21.1, NeoForge, Create мод, Aeronautics, полет, физика полета, дирижабли, самолеты, механика, инженерия, мультиплеер, Minecraft сервер РФ, Create Aeronautics сервер, лучший Minecraft сервер" />
   <meta id="pageDescription" name="description" content="Create Aeronautics server for Minecraft 1.21.1 NeoForge with Create mod, real flight physics, airships, and a chill no-griefing community." />
   <meta name="author" content="Create Aeronautics" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#08110d" />
-  <link rel="canonical" href="./" />
-  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+  <link rel="canonical" href="https://shizukuzk.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://shizukuzk.github.io/" />
+  <link rel="alternate" hreflang="ru" href="https://shizukuzk.github.io/" />
+  <link rel="alternate" hreflang="x-default" href="https://shizukuzk.github.io/" />
+  <link rel="sitemap" type="application/xml" href="https://shizukuzk.github.io/sitemap.xml" />
   <meta name="google-site-verification" content="ex3V3YiU6tBHwqg7EdcDW6_9H6FUsLjlcDEnDPg3YGk" />
   <meta name="yandex-verification" content="da5184f151d6d672" />
   <meta property="og:title" content="Create Aeronautics | Minecraft Server" />
   <meta property="og:description" content="Create Aeronautics server for Minecraft 1.21.1 NeoForge with Create mod, real flight physics, airships, and a chill no-griefing community." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="og-image.svg" />
+  <meta property="og:image" content="https://shizukuzk.github.io/og-image.svg" />
+  <meta property="og:image:url" content="https://shizukuzk.github.io/og-image.svg" />
+  <meta property="og:image:secure_url" content="https://shizukuzk.github.io/og-image.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Create Aeronautics green industrial Minecraft server banner" />
+  <meta property="og:url" content="https://shizukuzk.github.io/" />
   <meta property="og:site_name" content="Create Aeronautics" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Create Aeronautics | Minecraft Server" />
   <meta name="twitter:description" content="Create Aeronautics server for Minecraft 1.21.1 NeoForge with Create mod, real flight physics, airships, and a chill no-griefing community." />
-  <meta name="twitter:image" content="og-image.svg" />
+  <meta name="twitter:image" content="https://shizukuzk.github.io/og-image.svg" />
   <meta name="twitter:image:alt" content="Create Aeronautics green industrial Minecraft server banner" />
+  <meta name="twitter:url" content="https://shizukuzk.github.io/" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,8 +45,10 @@
     "softwareVersion": "Minecraft 1.21.1 NeoForge",
     "description": "Create Aeronautics server for Minecraft 1.21.1 NeoForge with Create mod, real flight physics, airships, and a chill no-griefing community.",
     "genre": ["Sandbox", "Simulation", "Adventure"],
-    "keywords": "Create Aeronautics server, Minecraft 1.21.1, NeoForge, Create mod, Aeronautics mod, real flight physics, airships, mechanical engineering, chill community, no griefing",
-    "url": "./"
+    "keywords": "Create Aeronautics server, Minecraft, NeoForge, Create mod, flight physics, airships, multiplayer",
+    "url": "https://shizukuzk.github.io/",
+    "inLanguage": ["en", "ru"],
+    "image": "https://shizukuzk.github.io/og-image.svg"
   }
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -719,6 +732,15 @@
 
     langToggle.addEventListener('click', () => {
       localStorage.setItem('create-aeronautics-language', selectedLanguage === 'ru' ? 'en' : 'ru');
+      // Обновляем meta теги перед перезагрузкой
+      const newLang = selectedLanguage === 'ru' ? 'en' : 'ru';
+      const newDict = translations[newLang];
+      document.documentElement.lang = newLang;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', newDict.pageTitle);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', newDict.pageDescription);
+      document.querySelector('meta[name="twitter:title"]').setAttribute('content', newDict.pageTitle);
+      document.querySelector('meta[name="twitter:description"]').setAttribute('content', newDict.pageDescription);
+      document.getElementById('pageDescription').setAttribute('content', newDict.pageDescription);
       window.location.reload();
     });
 
