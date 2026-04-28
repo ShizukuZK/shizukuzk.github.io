@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">Create Aeronautics | Minecraft Server</title>
+  <meta id="pageDescription" name="description" content="Create Aeronautics is a chill Minecraft server with Create and Aeronautics mods, real flight physics, and no griefing." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            copper: '#34d399',
+            brass: '#a3e635',
+            steel: '#8f9aa3',
+            ink: '#07110d',
+            panel: 'rgba(15, 20, 27, 0.72)',
+          },
+          boxShadow: {
+            glow: '0 0 40px rgba(52, 211, 153, 0.22)',
+          },
+          backgroundImage: {
+            'grid-fine': 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+            'hero-radial': 'radial-gradient(circle at top, rgba(52,211,153,0.22), transparent 34%), radial-gradient(circle at 20% 20%, rgba(163,230,53,0.16), transparent 22%), radial-gradient(circle at 80% 15%, rgba(34,197,94,0.12), transparent 20%)',
+          },
+          animation: {
+            floatSlow: 'floatSlow 9s ease-in-out infinite',
+            pulseGlow: 'pulseGlow 5s ease-in-out infinite',
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.7' },
+              '50%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(52,211,153,0.16), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(163,230,53,0.10), transparent 20%),
+        linear-gradient(180deg, #050807 0%, #08110d 44%, #050705 100%);
+      color: #e7edf2;
+    }
+
+    .display-font {
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    .glass-panel {
+      background: rgba(10, 16, 13, 0.72);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(220, 226, 232, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .metal-border {
+      position: relative;
+    }
+
+    .metal-border::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(163,230,53,0.8), rgba(52,211,153,0.7), rgba(34,197,94,0.2));
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .grid-overlay {
+      background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.05));
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: #86efac;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 2.25rem;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(134,239,172,1), rgba(134,239,172,0.15));
+    }
+
+    .step-card,
+    .info-card,
+    .hero-card {
+      transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .step-card:hover,
+    .info-card:hover,
+    .hero-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(134,239,172,0.3);
+    }
+
+    .animated-fade {
+      animation: fadeUp 900ms ease both;
+    }
+
+    .delay-1 { animation-delay: 120ms; }
+    .delay-2 { animation-delay: 240ms; }
+    .delay-3 { animation-delay: 360ms; }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0 grid-overlay opacity-40"></div>
+
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <a href="#top" class="group flex items-center gap-3">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-copper/40 bg-white/5 shadow-glow">
+          <i data-lucide="rocket" class="h-5 w-5 text-brass"></i>
+        </div>
+        <div>
+          <p class="display-font text-lg font-bold uppercase tracking-[0.28em] text-white">Create Aeronautics</p>
+          <p id="brandTagline" class="text-xs uppercase tracking-[0.28em] text-slate-400">Physics • Flight • Industry</p>
+        </div>
+      </a>
+
+      <nav class="hidden items-center gap-6 md:flex">
+        <a id="navAbout" class="text-sm text-slate-300 transition hover:text-brass" href="#about">About</a>
+        <a id="navJoin" class="text-sm text-slate-300 transition hover:text-brass" href="#join">How to Join</a>
+        <a id="navServerInfo" class="text-sm text-slate-300 transition hover:text-brass" href="#server-info">Server Info</a>
+        <a id="navDiscord" class="text-sm text-slate-300 transition hover:text-brass" href="#discord">Discord</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="langToggle" type="button" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-brass/60 hover:bg-white/10">
+          <i data-lucide="languages" class="h-4 w-4 text-brass"></i>
+          <span id="langToggleText">EN</span>
+        </button>
+        <a href="#server-info" class="inline-flex items-center gap-2 rounded-full border border-copper/40 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-brass/60 hover:bg-white/10">
+          <i data-lucide="satellite" class="h-4 w-4 text-brass"></i>
+          <span id="navGetIp" class="hidden sm:inline">Get IP</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-hero-radial opacity-100"></div>
+      <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent"></div>
+      <div class="mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
+        <div class="space-y-8 animated-fade">
+          <div class="inline-flex items-center gap-3 rounded-full border border-brass/20 bg-white/5 px-4 py-2 text-sm text-slate-200 backdrop-blur-md">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-copper shadow-[0_0_16px_rgba(52,211,153,0.95)]"></span>
+            <span id="heroBadgeText">1.21.1 NeoForge server • chill community • no griefing</span>
+          </div>
+
+          <div class="space-y-5">
+            <h1 id="heroTitle" class="display-font max-w-3xl text-5xl font-bold uppercase leading-none text-white sm:text-6xl lg:text-7xl">
+              Create Aeronautics
+            </h1>
+            <p id="heroSubtitle" class="max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+              Build machines, master real flight physics, and rise above the clouds in a copper-toned world of airships, engines, and precision engineering.
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <a href="#server-info" class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-6 py-3.5 font-semibold text-slate-950 shadow-[0_18px_40px_rgba(52,211,153,0.28)] transition hover:scale-[1.02]">
+              <i data-lucide="arrow-down" class="h-5 w-5"></i>
+              <span id="heroJoinNow">Join Now</span>
+            </a>
+            <a href="#about" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:border-brass/50 hover:bg-white/10">
+              <i data-lucide="layers-3" class="h-5 w-5 text-brass"></i>
+              <span id="heroExplore">Explore the server</span>
+            </a>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="glass-panel hero-card rounded-2xl p-4">
+              <p id="heroCard1Label" class="text-xs uppercase tracking-[0.24em] text-slate-400">Mods</p>
+              <p id="heroCard1Value" class="mt-2 text-lg font-semibold text-white">Create + Aeronautics</p>
+            </div>
+            <div class="glass-panel hero-card rounded-2xl p-4 delay-1">
+              <p id="heroCard2Label" class="text-xs uppercase tracking-[0.24em] text-slate-400">Version</p>
+              <p id="heroCard2Value" class="mt-2 text-lg font-semibold text-white">1.21.1 NeoForge</p>
+            </div>
+            <div class="glass-panel hero-card rounded-2xl p-4 delay-2">
+              <p id="heroCard3Label" class="text-xs uppercase tracking-[0.24em] text-slate-400">Atmosphere</p>
+              <p id="heroCard3Value" class="mt-2 text-lg font-semibold text-white">Chill, no griefing</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative lg:pl-8 animated-fade delay-1">
+          <div class="absolute -left-8 top-10 hidden h-28 w-28 rounded-full bg-copper/10 blur-3xl lg:block"></div>
+          <div class="absolute -right-6 bottom-6 hidden h-32 w-32 rounded-full bg-brass/10 blur-3xl lg:block"></div>
+
+          <div class="glass-panel metal-border relative overflow-hidden rounded-[2rem] p-6 sm:p-8">
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brass/70 to-transparent"></div>
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <p id="signalLabel" class="text-xs uppercase tracking-[0.26em] text-slate-400">Signal</p>
+                <p id="signalTitle" class="display-font text-2xl font-bold uppercase text-white">Industrial Flight Control</p>
+              </div>
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-brass/30 bg-white/5 animate-pulseGlow">
+                <i data-lucide="settings-2" class="h-6 w-6 text-brass"></i>
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="wind" class="h-5 w-5 text-copper"></i>
+                  <p id="feature1Title" class="font-semibold text-white">Real lift and thrust</p>
+                </div>
+                <p id="feature1Text" class="mt-3 text-sm leading-6 text-slate-300">Fly with momentum, mass, and engineering choices that actually matter in the air.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="construction" class="h-5 w-5 text-copper"></i>
+                  <p id="feature2Title" class="font-semibold text-white">Create engineering</p>
+                </div>
+                <p id="feature2Text" class="mt-3 text-sm leading-6 text-slate-300">Automate, transport, and build mechanical systems that fit the aesthetic.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="shield-check" class="h-5 w-5 text-copper"></i>
+                  <p id="feature3Title" class="font-semibold text-white">Friendly rules</p>
+                </div>
+                <p id="feature3Text" class="mt-3 text-sm leading-6 text-slate-300">A relaxed server where builders can experiment without griefing or drama.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="map-pinned" class="h-5 w-5 text-copper"></i>
+                  <p id="feature4Title" class="font-semibold text-white">Adventure-ready</p>
+                </div>
+                <p id="feature4Text" class="mt-3 text-sm leading-6 text-slate-300">Perfect for engineers, pilots, and friends who want a polished multiplayer home.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="mb-8 animated-fade">
+        <span id="aboutLabel" class="section-label">About</span>
+        <h2 id="aboutTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">A server built around engineering and flight</h2>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="glass-panel info-card rounded-[1.75rem] p-6 lg:col-span-2">
+          <div class="grid gap-6 md:grid-cols-2">
+            <div>
+              <p id="aboutText1" class="text-sm leading-7 text-slate-300">
+                Create Aeronautics combines the building depth of Create with the skybound mechanics of Aeronautics to create a world where every engine, propeller, and airframe feels purposeful.
+              </p>
+              <p id="aboutText2" class="mt-4 text-sm leading-7 text-slate-300">
+                This is not a simple creative sandbox. It is a polished multiplayer experience focused on real flight physics, technical builds, and stylish industrial bases.
+              </p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+              <div class="flex items-center gap-3">
+                <i data-lucide="move-3d" class="h-5 w-5 text-brass"></i>
+                <p id="aboutFeatureTitle" class="font-semibold text-white">What makes it different</p>
+              </div>
+              <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+                <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-brass"></span><span id="aboutBullet1">Airships and aircraft with weight, lift, and thrust that feel grounded.</span></li>
+                <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-brass"></span><span id="aboutBullet2">Industrial visuals inspired by brass, copper, and heavy machinery.</span></li>
+                <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-brass"></span><span id="aboutBullet3">Chill community vibes with no griefing.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel info-card rounded-[1.75rem] p-6">
+          <p id="communityLabel" class="text-xs uppercase tracking-[0.24em] text-slate-400">Community</p>
+          <p id="communityTitle" class="display-font mt-4 text-2xl font-bold uppercase text-white">Build together</p>
+          <p id="communityText" class="mt-4 text-sm leading-7 text-slate-300">
+            The server is meant for players who enjoy collaboration, experimentation, and a relaxed place to fly, engineer, and explore with friends.
+          </p>
+          <div id="communityNote" class="mt-6 rounded-2xl border border-copper/20 bg-copper/10 p-4 text-sm text-slate-200">
+            Zero griefing, high creativity, and a focus on good vibes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="join" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="mb-8 animated-fade">
+        <span id="joinLabel" class="section-label">How to Join</span>
+        <h2 id="joinTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">Three steps to get airborne</h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="glass-panel step-card rounded-[1.75rem] p-6">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-brass">
+            <span class="display-font text-xl font-bold">1</span>
+          </div>
+          <h3 id="step1Title" class="mt-5 text-xl font-semibold text-white">Download the modpack</h3>
+          <p id="step1Text" class="mt-3 text-sm leading-7 text-slate-300">Grab the server pack or launcher profile that includes Create and Aeronautics so your client matches the server setup.</p>
+        </article>
+
+        <article class="glass-panel step-card rounded-[1.75rem] p-6 delay-1">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-brass">
+            <span class="display-font text-xl font-bold">2</span>
+          </div>
+          <h3 id="step2Title" class="mt-5 text-xl font-semibold text-white">Install NeoForge 1.21.1</h3>
+          <p id="step2Text" class="mt-3 text-sm leading-7 text-slate-300">Use Minecraft 1.21.1 with NeoForge, then import the modpack and confirm that all required mods are enabled.</p>
+        </article>
+
+        <article class="glass-panel step-card rounded-[1.75rem] p-6 delay-2">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-brass">
+            <span class="display-font text-xl font-bold">3</span>
+          </div>
+          <h3 id="step3Title" class="mt-5 text-xl font-semibold text-white">Launch and connect</h3>
+          <p id="step3Text" class="mt-3 text-sm leading-7 text-slate-300">Open the game, join the server, and start building ships, machines, and hangars with the community.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="server-info" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
+        <div class="glass-panel metal-border rounded-[2rem] p-6 sm:p-8">
+          <span id="serverInfoLabel" class="section-label">Server Info</span>
+          <h2 id="serverInfoTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">Click to copy the IP</h2>
+          <p id="serverInfoText" class="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+            Use the buttons below to get the modpack and connect. The server runs version 1.21.1 with NeoForge and is tuned for a smooth, community-first multiplayer experience.
+          </p>
+
+          <a id="modpackButton" href="https://drive.google.com/file/d/1eNzVBa3JZiHGpLCl7n-sSu70Oylz3X9I/view?usp=sharing" target="_blank" rel="noreferrer" class="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[1.5rem] border border-emerald-300/40 bg-gradient-to-r from-emerald-500/25 via-lime-400/20 to-emerald-400/15 px-5 py-4 text-base font-semibold text-emerald-50 transition hover:-translate-y-0.5 hover:border-emerald-300/70 hover:shadow-[0_0_0_1px_rgba(134,239,172,0.25),0_20px_50px_rgba(16,185,129,0.22)] sm:justify-start">
+            <i data-lucide="download" class="h-5 w-5 text-emerald-200"></i>
+            <span id="modpackButtonText">Open Modpack</span>
+          </a>
+
+          <button id="copyButton" class="group mt-4 w-full rounded-[1.5rem] border border-brass/30 bg-gradient-to-r from-white/8 to-white/4 p-4 text-left transition hover:border-brass/60 hover:bg-white/10 sm:p-5">
+            <span class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <span>
+                <span id="ipLabel" class="text-xs uppercase tracking-[0.24em] text-slate-400">Minecraft Server IP</span>
+                <span id="serverIp" class="display-font mt-2 block text-2xl font-bold tracking-wide text-white sm:text-3xl">createaeronautics.joinserver.xyz</span>
+              </span>
+              <span id="copyStatus" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                <i data-lucide="copy" class="h-4 w-4 text-brass"></i>
+                <span id="copyStatusText">Click to copy</span>
+              </span>
+            </span>
+          </button>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p id="versionLabel" class="text-xs uppercase tracking-[0.24em] text-slate-400">Version</p>
+              <p id="versionValue" class="mt-2 text-lg font-semibold text-white">1.21.1 NeoForge</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p id="communityLabel2" class="text-xs uppercase tracking-[0.24em] text-slate-400">Community</p>
+              <p id="communityValue" class="mt-2 text-lg font-semibold text-white">Chill, friendly, no griefing</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="glass-panel info-card rounded-[1.75rem] p-6">
+            <div class="flex items-center gap-3">
+              <i data-lucide="server" class="h-5 w-5 text-brass"></i>
+              <p id="setupTitle" class="font-semibold text-white">Recommended setup</p>
+            </div>
+            <p id="setupText" class="mt-3 text-sm leading-7 text-slate-300">A stable modded client, the right NeoForge version, and a fresh launcher profile will keep joins clean and fast.</p>
+          </div>
+
+          <div class="glass-panel info-card rounded-[1.75rem] p-6">
+            <div class="flex items-center gap-3">
+              <i data-lucide="badge-info" class="h-5 w-5 text-brass"></i>
+              <p id="helpTitle" class="font-semibold text-white">Need help?</p>
+            </div>
+            <p id="helpText" class="mt-3 text-sm leading-7 text-slate-300">If a player has trouble joining, direct them to Discord so the community can help with installs and setup.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="discord" class="mx-auto max-w-7xl px-4 pb-20 pt-6 sm:px-6 lg:px-8 lg:pb-28">
+      <div class="glass-panel metal-border rounded-[2rem] p-6 sm:p-8">
+        <div class="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <span id="discordLabel" class="section-label">Discord</span>
+            <h2 id="discordTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">Join the community</h2>
+            <p id="discordText" class="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+              Stay up to date, ask for support, share builds, and coordinate flights with other players in our Discord community.
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row lg:justify-end">
+            <a id="discordButton" href="https://discord.gg/xrxKm5GW" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 px-6 py-3.5 font-semibold text-slate-950 transition hover:scale-[1.02]">
+              <i data-lucide="message-circle" class="h-5 w-5"></i>
+              <span id="discordButtonText">Join Discord</span>
+            </a>
+            <a href="#top" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:border-brass/50 hover:bg-white/10">
+              <i data-lucide="chevron-up" class="h-5 w-5 text-brass"></i>
+              <span id="backToTopText">Back to top</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        pageTitle: 'Create Aeronautics | Minecraft Server',
+        pageDescription: 'Create Aeronautics is a chill Minecraft server with Create and Aeronautics mods, real flight physics, and no griefing.',
+        brandTagline: 'Physics • Flight • Industry',
+        navAbout: 'About',
+        navJoin: 'How to Join',
+        navServerInfo: 'Server Info',
+        navDiscord: 'Discord',
+        navGetIp: 'Get IP',
+        heroBadgeText: '1.21.1 NeoForge server • chill community • no griefing',
+        heroTitle: 'Create Aeronautics',
+        heroSubtitle: 'Build machines, master real flight physics, and rise above the clouds in a copper-toned world of airships, engines, and precision engineering.',
+        heroJoinNow: 'Join Now',
+        heroExplore: 'Explore the server',
+        heroCard1Label: 'Mods',
+        heroCard1Value: 'Create + Aeronautics',
+        heroCard2Label: 'Version',
+        heroCard2Value: '1.21.1 NeoForge',
+        heroCard3Label: 'Atmosphere',
+        heroCard3Value: 'Chill, no griefing',
+        signalLabel: 'Signal',
+        signalTitle: 'Industrial Flight Control',
+        feature1Title: 'Real lift and thrust',
+        feature1Text: 'Fly with momentum, mass, and engineering choices that actually matter in the air.',
+        feature2Title: 'Create engineering',
+        feature2Text: 'Automate, transport, and build mechanical systems that fit the aesthetic.',
+        feature3Title: 'Friendly rules',
+        feature3Text: 'A relaxed server where builders can experiment without griefing or drama.',
+        feature4Title: 'Adventure-ready',
+        feature4Text: 'Perfect for engineers, pilots, and friends who want a polished multiplayer home.',
+        aboutLabel: 'About',
+        aboutTitle: 'A server built around engineering and flight',
+        aboutText1: 'Create Aeronautics combines the building depth of Create with the skybound mechanics of Aeronautics to create a world where every engine, propeller, and airframe feels purposeful.',
+        aboutText2: 'This is not a simple creative sandbox. It is a polished multiplayer experience focused on real flight physics, technical builds, and stylish industrial bases.',
+        aboutFeatureTitle: 'What makes it different',
+        aboutBullet1: 'Airships and aircraft with weight, lift, and thrust that feel grounded.',
+        aboutBullet2: 'Industrial visuals inspired by brass, copper, and heavy machinery.',
+        aboutBullet3: 'Chill community vibes with no griefing.',
+        communityLabel: 'Community',
+        communityTitle: 'Build together',
+        communityText: 'The server is meant for players who enjoy collaboration, experimentation, and a relaxed place to fly, engineer, and explore with friends.',
+        communityNote: 'Zero griefing, high creativity, and a focus on good vibes.',
+        joinLabel: 'How to Join',
+        joinTitle: 'Three steps to get airborne',
+        step1Title: 'Download the modpack',
+        step1Text: 'Grab the server pack or launcher profile that includes Create and Aeronautics so your client matches the server setup.',
+        step2Title: 'Install NeoForge 1.21.1',
+        step2Text: 'Use Minecraft 1.21.1 with NeoForge, then import the modpack and confirm that all required mods are enabled.',
+        step3Title: 'Launch and connect',
+        step3Text: 'Open the game, join the server, and start building ships, machines, and hangars with the community.',
+        serverInfoLabel: 'Server Info',
+        serverInfoTitle: 'Click to copy the IP',
+        serverInfoText: 'Use the buttons below to get the modpack and connect. The server runs version 1.21.1 with NeoForge and is tuned for a smooth, community-first multiplayer experience.',
+        modpackButtonText: 'Open Modpack',
+        ipLabel: 'Minecraft Server IP',
+        copyStatusText: 'Click to copy',
+        versionLabel: 'Version',
+        versionValue: '1.21.1 NeoForge',
+        communityLabel2: 'Community',
+        communityValue: 'Chill, friendly, no griefing',
+        setupTitle: 'Recommended setup',
+        setupText: 'A stable modded client, the right NeoForge version, and a fresh launcher profile will keep joins clean and fast.',
+        helpTitle: 'Need help?',
+        helpText: 'If a player has trouble joining, direct them to Discord so the community can help with installs and setup.',
+        discordLabel: 'Discord',
+        discordTitle: 'Join the community',
+        discordText: 'Stay up to date, ask for support, share builds, and coordinate flights with other players in our Discord community.',
+        discordButtonText: 'Join Discord',
+        backToTopText: 'Back to top',
+        discordUrl: 'https://discord.gg/xrxKm5GW',
+      },
+      ru: {
+        pageTitle: 'Create Aeronautics | Minecraft сервер',
+        pageDescription: 'Create Aeronautics — уютный Minecraft сервер с модами Create и Aeronautics, реалистичной физикой полета и без грифа.',
+        brandTagline: 'Физика • Полеты • Индустрия',
+        navAbout: 'О сервере',
+        navJoin: 'Как зайти',
+        navServerInfo: 'Инфо сервера',
+        navDiscord: 'Discord',
+        navGetIp: 'Скопировать IP',
+        heroBadgeText: 'Сервер 1.21.1 NeoForge • спокойное комьюнити • без грифа',
+        heroTitle: 'Create Aeronautics',
+        heroSubtitle: 'Строй механизмы, управляй настоящей физикой полета и поднимайся над облаками в индустриальном мире из меди, латуни и стали.',
+        heroJoinNow: 'Зайти на сервер',
+        heroExplore: 'Посмотреть сервер',
+        heroCard1Label: 'Моды',
+        heroCard1Value: 'Create + Aeronautics',
+        heroCard2Label: 'Версия',
+        heroCard2Value: '1.21.1 NeoForge',
+        heroCard3Label: 'Атмосфера',
+        heroCard3Value: 'Спокойно, без грифа',
+        signalLabel: 'Сигнал',
+        signalTitle: 'Индустриальное управление полетом',
+        feature1Title: 'Реальная подъемная сила',
+        feature1Text: 'Летай с учетом массы, тяги и инженерных решений, которые реально влияют на поведение в небе.',
+        feature2Title: 'Инженерия Create',
+        feature2Text: 'Автоматизируй, перевози ресурсы и строй механические системы, которые подходят к стилю сервера.',
+        feature3Title: 'Дружелюбные правила',
+        feature3Text: 'Спокойный сервер, где можно экспериментировать без грифа и лишней драмы.',
+        feature4Title: 'Готов к приключениям',
+        feature4Text: 'Отлично подойдет инженерам, пилотам и друзьям, которым нужен красивый и продуманный мультиплеер.',
+        aboutLabel: 'О сервере',
+        aboutTitle: 'Сервер про инженерию и полеты',
+        aboutText1: 'Create Aeronautics объединяет глубину строительства из Create и небесную механику Aeronautics, чтобы каждый двигатель, винт и корпус ощущались осмысленно.',
+        aboutText2: 'Это не просто песочница для творчества. Это проработанный мультиплеер с настоящей физикой полета, техническими постройками и стильной индустриальной эстетикой.',
+        aboutFeatureTitle: 'Что делает его особенным',
+        aboutBullet1: 'Дирижабли и самолеты с весом, подъемной силой и тягой, которые ощущаются реалистично.',
+        aboutBullet2: 'Индустриальный визуал в духе латуни, меди и тяжелой механики.',
+        aboutBullet3: 'Спокойное комьюнити без грифа.',
+        communityLabel: 'Комьюнити',
+        communityTitle: 'Строим вместе',
+        communityText: 'Сервер для игроков, которым нравится сотрудничество, эксперименты и расслабленное место, где можно летать, инженерить и исследовать мир вместе с друзьями.',
+        communityNote: 'Без грифа, с упором на творчество и приятную атмосферу.',
+        joinLabel: 'Как зайти',
+        joinTitle: 'Три шага, чтобы взлететь',
+        step1Title: 'Скачай модпак',
+        step1Text: 'Загрузи сборку или профиль лаунчера с Create и Aeronautics, чтобы клиент совпадал с настройками сервера.',
+        step2Title: 'Установи NeoForge 1.21.1',
+        step2Text: 'Используй Minecraft 1.21.1 с NeoForge, затем импортируй модпак и проверь, что все нужные моды включены.',
+        step3Title: 'Запусти игру и подключайся',
+        step3Text: 'Открой игру, зайди на сервер и начинай строить корабли, машины и ангары вместе с комьюнити.',
+        serverInfoLabel: 'Инфо сервера',
+        serverInfoTitle: 'Нажми, чтобы скопировать IP',
+        serverInfoText: 'Используй кнопки ниже, чтобы открыть модпак и подключиться. Сервер работает на версии 1.21.1 с NeoForge и рассчитан на комфортный мультиплеер без лишнего шума.',
+        modpackButtonText: 'Открыть модпак',
+        ipLabel: 'IP сервера Minecraft',
+        copyStatusText: 'Нажми, чтобы скопировать',
+        versionLabel: 'Версия',
+        versionValue: '1.21.1 NeoForge',
+        communityLabel2: 'Комьюнити',
+        communityValue: 'Спокойно, дружелюбно, без грифа',
+        setupTitle: 'Рекомендуемая настройка',
+        setupText: 'Стабильный модовый клиент, правильная версия NeoForge и свежий профиль лаунчера помогут заходить быстро и без проблем.',
+        helpTitle: 'Нужна помощь?',
+        helpText: 'Если у игрока проблемы с подключением, отправь его в Discord — там помогут с установкой и настройкой.',
+        discordLabel: 'Discord',
+        discordTitle: 'Присоединяйся к комьюнити',
+        discordText: 'Следи за обновлениями, проси помощь, делись постройками и координируй полеты с другими игроками в нашем Discord.',
+        discordButtonText: 'Открыть Discord',
+        backToTopText: 'Наверх',
+        discordUrl: 'https://discord.gg/xrxKm5GW',
+      },
+    };
+
+    const isCisLocale = /^(ru|uk|be|kk|ky|az|hy|ka|uz|tg|tt|mo)(-|$)/i.test(navigator.language || navigator.userLanguage || '');
+    const savedLanguage = localStorage.getItem('create-aeronautics-language');
+    const selectedLanguage = translations[savedLanguage] ? savedLanguage : (isCisLocale ? 'ru' : 'en');
+    const copyButton = document.getElementById('copyButton');
+    const copyStatus = document.getElementById('copyStatus');
+    const langToggle = document.getElementById('langToggle');
+    const langToggleText = document.getElementById('langToggleText');
+    const serverIp = document.getElementById('serverIp').textContent.trim();
+    const dictionary = translations[selectedLanguage];
+
+    document.documentElement.lang = selectedLanguage;
+    document.getElementById('pageTitle').textContent = dictionary.pageTitle;
+    document.getElementById('pageDescription').setAttribute('content', dictionary.pageDescription);
+    document.getElementById('brandTagline').textContent = dictionary.brandTagline;
+    document.getElementById('navAbout').textContent = dictionary.navAbout;
+    document.getElementById('navJoin').textContent = dictionary.navJoin;
+    document.getElementById('navServerInfo').textContent = dictionary.navServerInfo;
+    document.getElementById('navDiscord').textContent = dictionary.navDiscord;
+    document.getElementById('navGetIp').textContent = dictionary.navGetIp;
+    document.getElementById('heroBadgeText').textContent = dictionary.heroBadgeText;
+    document.getElementById('heroTitle').textContent = dictionary.heroTitle;
+    document.getElementById('heroSubtitle').textContent = dictionary.heroSubtitle;
+    document.getElementById('heroJoinNow').textContent = dictionary.heroJoinNow;
+    document.getElementById('heroExplore').textContent = dictionary.heroExplore;
+    document.getElementById('heroCard1Label').textContent = dictionary.heroCard1Label;
+    document.getElementById('heroCard1Value').textContent = dictionary.heroCard1Value;
+    document.getElementById('heroCard2Label').textContent = dictionary.heroCard2Label;
+    document.getElementById('heroCard2Value').textContent = dictionary.heroCard2Value;
+    document.getElementById('heroCard3Label').textContent = dictionary.heroCard3Label;
+    document.getElementById('heroCard3Value').textContent = dictionary.heroCard3Value;
+    document.getElementById('signalLabel').textContent = dictionary.signalLabel;
+    document.getElementById('signalTitle').textContent = dictionary.signalTitle;
+    document.getElementById('feature1Title').textContent = dictionary.feature1Title;
+    document.getElementById('feature1Text').textContent = dictionary.feature1Text;
+    document.getElementById('feature2Title').textContent = dictionary.feature2Title;
+    document.getElementById('feature2Text').textContent = dictionary.feature2Text;
+    document.getElementById('feature3Title').textContent = dictionary.feature3Title;
+    document.getElementById('feature3Text').textContent = dictionary.feature3Text;
+    document.getElementById('feature4Title').textContent = dictionary.feature4Title;
+    document.getElementById('feature4Text').textContent = dictionary.feature4Text;
+    document.getElementById('aboutLabel').textContent = dictionary.aboutLabel;
+    document.getElementById('aboutTitle').textContent = dictionary.aboutTitle;
+    document.getElementById('aboutText1').textContent = dictionary.aboutText1;
+    document.getElementById('aboutText2').textContent = dictionary.aboutText2;
+    document.getElementById('aboutFeatureTitle').textContent = dictionary.aboutFeatureTitle;
+    document.getElementById('aboutBullet1').textContent = dictionary.aboutBullet1;
+    document.getElementById('aboutBullet2').textContent = dictionary.aboutBullet2;
+    document.getElementById('aboutBullet3').textContent = dictionary.aboutBullet3;
+    document.getElementById('communityLabel').textContent = dictionary.communityLabel;
+    document.getElementById('communityTitle').textContent = dictionary.communityTitle;
+    document.getElementById('communityText').textContent = dictionary.communityText;
+    document.getElementById('communityNote').textContent = dictionary.communityNote;
+    document.getElementById('joinLabel').textContent = dictionary.joinLabel;
+    document.getElementById('joinTitle').textContent = dictionary.joinTitle;
+    document.getElementById('step1Title').textContent = dictionary.step1Title;
+    document.getElementById('step1Text').textContent = dictionary.step1Text;
+    document.getElementById('step2Title').textContent = dictionary.step2Title;
+    document.getElementById('step2Text').textContent = dictionary.step2Text;
+    document.getElementById('step3Title').textContent = dictionary.step3Title;
+    document.getElementById('step3Text').textContent = dictionary.step3Text;
+    document.getElementById('serverInfoLabel').textContent = dictionary.serverInfoLabel;
+    document.getElementById('serverInfoTitle').textContent = dictionary.serverInfoTitle;
+    document.getElementById('serverInfoText').textContent = dictionary.serverInfoText;
+    document.getElementById('modpackButtonText').textContent = dictionary.modpackButtonText;
+    document.getElementById('ipLabel').textContent = dictionary.ipLabel;
+    document.getElementById('copyStatusText').textContent = dictionary.copyStatusText;
+    document.getElementById('versionLabel').textContent = dictionary.versionLabel;
+    document.getElementById('versionValue').textContent = dictionary.versionValue;
+    document.getElementById('communityLabel2').textContent = dictionary.communityLabel2;
+    document.getElementById('communityValue').textContent = dictionary.communityValue;
+    document.getElementById('setupTitle').textContent = dictionary.setupTitle;
+    document.getElementById('setupText').textContent = dictionary.setupText;
+    document.getElementById('helpTitle').textContent = dictionary.helpTitle;
+    document.getElementById('helpText').textContent = dictionary.helpText;
+    document.getElementById('discordLabel').textContent = dictionary.discordLabel;
+    document.getElementById('discordTitle').textContent = dictionary.discordTitle;
+    document.getElementById('discordText').textContent = dictionary.discordText;
+    document.getElementById('discordButtonText').textContent = dictionary.discordButtonText;
+    document.getElementById('backToTopText').textContent = dictionary.backToTopText;
+    document.getElementById('discordButton').setAttribute('href', dictionary.discordUrl);
+    langToggleText.textContent = selectedLanguage === 'ru' ? 'EN' : 'RU';
+
+    lucide.createIcons();
+
+    langToggle.addEventListener('click', () => {
+      localStorage.setItem('create-aeronautics-language', selectedLanguage === 'ru' ? 'en' : 'ru');
+      window.location.reload();
+    });
+
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(serverIp);
+        copyStatus.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
+        lucide.createIcons();
+      } catch (error) {
+        copyStatus.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Ошибка копирования' : 'Copy failed') + '</span>';
+        lucide.createIcons();
+      }
+
+      clearTimeout(window.copyStatusReset);
+      window.copyStatusReset = setTimeout(() => {
+        copyStatus.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dictionary.copyStatusText + '</span>';
+        lucide.createIcons();
+      }, 1800);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        const targetId = anchor.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+
+        const target = document.querySelector(targetId);
+        if (!target) return;
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
