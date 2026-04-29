@@ -798,56 +798,62 @@
     document.getElementById('discordButton').setAttribute('href', dictionary.discordUrl);
     langToggleText.textContent = selectedLanguage === 'ru' ? 'EN' : 'RU';
 
-    lucide.createIcons();
-    document.querySelectorAll('svg.lucide').forEach((icon) => {
-      icon.setAttribute('aria-hidden', 'true');
-      icon.setAttribute('focusable', 'false');
-    });
-
-    langToggle.addEventListener('click', () => {
-      const newLang = selectedLanguage === 'ru' ? 'en' : 'ru';
-      localStorage.setItem('create-aeronautics-language', newLang);
-      // Update changelog link to point to new language before reload
-      document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + newLang);
-      // Обновляем meta теги перед перезагрузкой
-      const newDict = translations[newLang];
-      document.documentElement.lang = newLang;
-      document.querySelector('meta[property="og:title"]').setAttribute('content', newDict.pageTitle);
-      document.querySelector('meta[property="og:description"]').setAttribute('content', newDict.pageDescription);
-      document.querySelector('meta[name="twitter:title"]').setAttribute('content', newDict.pageTitle);
-      document.querySelector('meta[name="twitter:description"]').setAttribute('content', newDict.pageDescription);
-      document.getElementById('pageDescription').setAttribute('content', newDict.pageDescription);
-      window.location.reload();
-    });
-
-    copyButton.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(serverIp);
-        copyStatus.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
-        lucide.createIcons();
-        document.querySelectorAll('svg.lucide').forEach((icon) => {
-          icon.setAttribute('aria-hidden', 'true');
-          icon.setAttribute('focusable', 'false');
-        });
-      } catch (error) {
-        copyStatus.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Ошибка копирования' : 'Copy failed') + '</span>';
-        lucide.createIcons();
-        document.querySelectorAll('svg.lucide').forEach((icon) => {
-          icon.setAttribute('aria-hidden', 'true');
-          icon.setAttribute('focusable', 'false');
-        });
+    // Initialize Lucide icons with retry mechanism
+    function initLucideIcons() {
+      if (typeof lucide === 'undefined') {
+        setTimeout(initLucideIcons, 100);
+        return;
       }
-
-      clearTimeout(window.copyStatusReset);
-      window.copyStatusReset = setTimeout(() => {
-        copyStatus.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dictionary.copyStatusText + '</span>';
+      try {
         lucide.createIcons();
         document.querySelectorAll('svg.lucide').forEach((icon) => {
           icon.setAttribute('aria-hidden', 'true');
           icon.setAttribute('focusable', 'false');
         });
-      }, 1800);
-    });
+      } catch (e) {
+        console.warn('Lucide initialization warning:', e);
+      }
+    }
+    initLucideIcons();
+
+    // Ensure langToggle is properly bound
+    if (langToggle && typeof langToggle.addEventListener === 'function') {
+      langToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        const newLang = selectedLanguage === 'ru' ? 'en' : 'ru';
+        localStorage.setItem('create-aeronautics-language', newLang);
+        document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + newLang);
+        const newDict = translations[newLang];
+        document.documentElement.lang = newLang;
+        document.querySelector('meta[property="og:title"]').setAttribute('content', newDict.pageTitle);
+        document.querySelector('meta[property="og:description"]').setAttribute('content', newDict.pageDescription);
+        document.querySelector('meta[name="twitter:title"]').setAttribute('content', newDict.pageTitle);
+        document.querySelector('meta[name="twitter:description"]').setAttribute('content', newDict.pageDescription);
+        document.getElementById('pageDescription').setAttribute('content', newDict.pageDescription);
+        window.location.reload();
+      });
+    }
+
+    // Ensure copyButton works
+    if (copyButton && typeof copyButton.addEventListener === 'function') {
+      copyButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(serverIp);
+          copyStatus.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
+          initLucideIcons();
+        } catch (error) {
+          copyStatus.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Ошибка копирования' : 'Copy failed') + '</span>';
+          initLucideIcons();
+        }
+        
+        clearTimeout(window.copyStatusReset);
+        window.copyStatusReset = setTimeout(() => {
+          copyStatus.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dictionary.copyStatusText + '</span>';
+          initLucideIcons();
+        }, 1800);
+      });
+    }
 
     // Cookie banner and conditional analytics (Plausible) loading
     function loadAnalytics(){
