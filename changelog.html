@@ -12,26 +12,69 @@
 </head>
 <body class="bg-slate-900 text-slate-100">
   <main class="max-w-4xl mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-4">Modpack Changelog</h1>
+    <div class="flex items-center justify-between mb-6">
+      <h1 id="pageTitle" class="text-3xl font-bold">Changelog</h1>
+      <div>
+        <button id="langSwitch" class="px-3 py-1 rounded bg-white/5">Switch language</button>
+      </div>
+    </div>
 
-    <article class="mb-6">
+    <section id="ch_en" style="display:none">
       <h2 class="text-xl font-semibold">v1.0.2 — 2026-04-28</h2>
       <ul class="list-disc ml-6 mt-2">
         <li>Minor bugfixes and dependency updates.</li>
         <li>Updated Aeronautics compatibility tweaks.</li>
       </ul>
-    </article>
 
-    <article class="mb-6">
-      <h2 class="text-xl font-semibold">v1.0.1 — 2026-03-10</h2>
+      <h2 class="text-xl font-semibold mt-6">v1.0.1 — 2026-03-10</h2>
       <ul class="list-disc ml-6 mt-2">
         <li>Initial public release of the server pack.</li>
       </ul>
-    </article>
+    </section>
+
+    <section id="ch_ru" style="display:none">
+      <h2 class="text-xl font-semibold">v1.0.2 — 2026-04-28</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <li>Мелкие исправления ошибок и обновления зависимостей.</li>
+        <li>Обновлены правки совместимости для Aeronautics.</li>
+      </ul>
+
+      <h2 class="text-xl font-semibold mt-6">v1.0.1 — 2026-03-10</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <li>Первый публичный релиз сборки сервера.</li>
+      </ul>
+    </section>
 
     <section class="mt-8">
       <a href="/" class="inline-block bg-emerald-500 px-4 py-2 rounded font-semibold text-slate-900">Back to home</a>
     </section>
   </main>
+
+  <script>
+    function getParam(name){
+      const params = new URLSearchParams(location.search);
+      return params.get(name);
+    }
+
+    const stored = localStorage.getItem('create-aeronautics-language');
+    const paramLang = getParam('lang');
+    let lang = paramLang || stored || (navigator.language && navigator.language.startsWith('ru') ? 'ru' : 'en');
+
+    function showLang(l){
+      document.getElementById('ch_en').style.display = l === 'en' ? 'block' : 'none';
+      document.getElementById('ch_ru').style.display = l === 'ru' ? 'block' : 'none';
+      document.getElementById('pageTitle').textContent = l === 'ru' ? 'Журнал изменений' : 'Changelog';
+    }
+
+    showLang(lang);
+
+    document.getElementById('langSwitch').addEventListener('click', ()=>{
+      const newLang = lang === 'ru' ? 'en' : 'ru';
+      localStorage.setItem('create-aeronautics-language', newLang);
+      const url = new URL(location.href);
+      url.searchParams.set('lang', newLang);
+      location.href = url.toString();
+    });
+  </script>
 </body>
 </html>

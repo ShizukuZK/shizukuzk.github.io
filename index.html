@@ -222,7 +222,6 @@
         <a id="navAbout" class="text-sm text-slate-300 transition hover:text-brass" href="#about">About</a>
         <a id="navJoin" class="text-sm text-slate-300 transition hover:text-brass" href="#join">How to Join</a>
         <a id="navServerInfo" class="text-sm text-slate-300 transition hover:text-brass" href="#server-info">Server Info</a>
-        <a id="navInstall" class="text-sm text-slate-300 transition hover:text-brass" href="/install.html">Install</a>
         <a id="navChangelog" class="text-sm text-slate-300 transition hover:text-brass" href="/changelog.html">Changelog</a>
         <a id="navDiscord" class="text-sm text-slate-300 transition hover:text-brass" href="#discord">Discord</a>
       </nav>
@@ -732,6 +731,8 @@
     document.getElementById('navJoin').textContent = dictionary.navJoin;
     document.getElementById('navServerInfo').textContent = dictionary.navServerInfo;
     document.getElementById('navDiscord').textContent = dictionary.navDiscord;
+    document.getElementById('navChangelog').textContent = dictionary.navChangelog || 'Changelog';
+    document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + selectedLanguage);
     document.getElementById('navGetIp').textContent = dictionary.navGetIp;
     document.getElementById('heroBadgeText').textContent = dictionary.heroBadgeText;
     document.getElementById('heroTitle').textContent = dictionary.heroTitle;
@@ -803,9 +804,11 @@
     });
 
     langToggle.addEventListener('click', () => {
-      localStorage.setItem('create-aeronautics-language', selectedLanguage === 'ru' ? 'en' : 'ru');
-      // Обновляем meta теги перед перезагрузкой
       const newLang = selectedLanguage === 'ru' ? 'en' : 'ru';
+      localStorage.setItem('create-aeronautics-language', newLang);
+      // Update changelog link to point to new language before reload
+      document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + newLang);
+      // Обновляем meta теги перед перезагрузкой
       const newDict = translations[newLang];
       document.documentElement.lang = newLang;
       document.querySelector('meta[property="og:title"]').setAttribute('content', newDict.pageTitle);
