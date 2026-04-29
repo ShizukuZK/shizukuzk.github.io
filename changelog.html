@@ -3,50 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Changelog — Create Aeronautics</title>
-  <meta name="description" content="Modpack changelog and release notes for Create Aeronautics.">
+  <title id="pageTitle">Changelog — Create Aeronautics</title>
+  <meta name="description" id="pageDesc" content="Modpack changelog and release notes for Create Aeronautics.">
   <link rel="canonical" href="https://shizukuzk.github.io/changelog.html" />
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#08110d">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-slate-100">
-  <main class="max-w-4xl mx-auto p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h1 id="pageTitle" class="text-3xl font-bold">Changelog</h1>
-      <div>
-        <button id="langSwitch" class="px-3 py-1 rounded bg-white/5">Switch language</button>
-      </div>
+<body class="bg-gradient-to-b from-slate-950 to-slate-900 text-slate-100 min-h-screen">
+  <header class="border-b border-white/10 bg-slate-950/75 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-lg font-bold text-white hover:text-brass transition">← Home</a>
+      <button id="langSwitch" class="px-3 py-1 rounded bg-white/5 border border-white/10 hover:border-brass/50 text-sm transition"><span id="langSwitchText">RU</span></button>
     </div>
+  </header>
 
+  <main class="max-w-4xl mx-auto p-6 py-12">
     <section id="ch_en" style="display:none">
-      <h2 class="text-xl font-semibold">v1.0.2 — 2026-04-28</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li>Minor bugfixes and dependency updates.</li>
-        <li>Updated Aeronautics compatibility tweaks.</li>
-      </ul>
+      <h1 class="text-4xl font-bold mb-8">Changelog</h1>
+      <div class="space-y-8">
+        <article class="border-l-2 border-brass pl-6">
+          <h2 class="text-2xl font-semibold text-white">v1.0.2 — 2026-04-28</h2>
+          <ul class="list-disc ml-4 mt-4 space-y-2 text-slate-300">
+            <li>Minor bugfixes and dependency updates.</li>
+            <li>Updated Aeronautics compatibility tweaks.</li>
+          </ul>
+        </article>
 
-      <h2 class="text-xl font-semibold mt-6">v1.0.1 — 2026-03-10</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li>Initial public release of the server pack.</li>
-      </ul>
+        <article class="border-l-2 border-brass pl-6">
+          <h2 class="text-2xl font-semibold text-white">v1.0.1 — 2026-03-10</h2>
+          <ul class="list-disc ml-4 mt-4 space-y-2 text-slate-300">
+            <li>Initial public release of the server pack.</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
     <section id="ch_ru" style="display:none">
-      <h2 class="text-xl font-semibold">v1.0.2 — 2026-04-28</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li>Мелкие исправления ошибок и обновления зависимостей.</li>
-        <li>Обновлены правки совместимости для Aeronautics.</li>
-      </ul>
+      <h1 class="text-4xl font-bold mb-8">Журнал изменений</h1>
+      <div class="space-y-8">
+        <article class="border-l-2 border-brass pl-6">
+          <h2 class="text-2xl font-semibold text-white">v1.0.2 — 2026-04-28</h2>
+          <ul class="list-disc ml-4 mt-4 space-y-2 text-slate-300">
+            <li>Мелкие исправления ошибок и обновления зависимостей.</li>
+            <li>Обновлены правки совместимости для Aeronautics.</li>
+          </ul>
+        </article>
 
-      <h2 class="text-xl font-semibold mt-6">v1.0.1 — 2026-03-10</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li>Первый публичный релиз сборки сервера.</li>
-      </ul>
-    </section>
-
-    <section class="mt-8">
-      <a href="/" class="inline-block bg-emerald-500 px-4 py-2 rounded font-semibold text-slate-900">Back to home</a>
+        <article class="border-l-2 border-brass pl-6">
+          <h2 class="text-2xl font-semibold text-white">v1.0.1 — 2026-03-10</h2>
+          <ul class="list-disc ml-4 mt-4 space-y-2 text-slate-300">
+            <li>Первый публичный релиз сборки сервера.</li>
+          </ul>
+        </article>
+      </div>
     </section>
   </main>
 
@@ -63,17 +73,18 @@
     function showLang(l){
       document.getElementById('ch_en').style.display = l === 'en' ? 'block' : 'none';
       document.getElementById('ch_ru').style.display = l === 'ru' ? 'block' : 'none';
-      document.getElementById('pageTitle').textContent = l === 'ru' ? 'Журнал изменений' : 'Changelog';
+      document.getElementById('pageTitle').textContent = l === 'ru' ? 'Журнал изменений — Create Aeronautics' : 'Changelog — Create Aeronautics';
+      document.getElementById('pageDesc').setAttribute('content', l === 'ru' ? 'Журнал изменений и релиз ноты для Create Aeronautics.' : 'Modpack changelog and release notes for Create Aeronautics.');
+      document.getElementById('langSwitchText').textContent = l === 'ru' ? 'EN' : 'RU';
     }
 
     showLang(lang);
 
     document.getElementById('langSwitch').addEventListener('click', ()=>{
       const newLang = lang === 'ru' ? 'en' : 'ru';
+      lang = newLang;
       localStorage.setItem('create-aeronautics-language', newLang);
-      const url = new URL(location.href);
-      url.searchParams.set('lang', newLang);
-      location.href = url.toString();
+      showLang(newLang);
     });
   </script>
 </body>

@@ -3,61 +3,129 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Install Create Aeronautics — Step-by-step</title>
-  <meta name="description" content="Install guide for Create Aeronautics server: NeoForge setup, modpack import, common fixes.">
+  <title id="pageTitle">Install Create Aeronautics — Step-by-step</title>
+  <meta name="description" id="pageDesc" content="Install guide for Create Aeronautics server: NeoForge setup, modpack import, common fixes.">
   <link rel="canonical" href="https://shizukuzk.github.io/install.html" />
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#08110d">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-slate-100">
-  <main class="max-w-4xl mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-4">How to install the modpack (NeoForge 1.21.1)</h1>
+<body class="bg-gradient-to-b from-slate-950 to-slate-900 text-slate-100 min-h-screen">
+  <header class="border-b border-white/10 bg-slate-950/75 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-lg font-bold text-white hover:text-brass transition">← Home</a>
+      <button id="langSwitch" class="px-3 py-1 rounded bg-white/5 border border-white/10 hover:border-brass/50 text-sm transition"><span id="langSwitchText">RU</span></button>
+    </div>
+  </header>
 
-    <section>
-      <h2 class="text-xl font-semibold mt-4">1. Requirements</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li>Java 17+ (recommended)</li>
-        <li>Minecraft 1.21.1 compatible NeoForge</li>
-        <li>At least 4 GB RAM assigned to the client</li>
-      </ul>
+  <main class="max-w-4xl mx-auto p-6 py-12">
+    <section id="content_en" style="display:none">
+      <h1 class="text-4xl font-bold mb-8">How to install the modpack (NeoForge 1.21.1)</h1>
+
+      <article class="space-y-8">
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">1. Requirements</h2>
+          <ul class="list-disc ml-6 mt-4 space-y-2 text-slate-300">
+            <li>Java 17+ (recommended)</li>
+            <li>Minecraft 1.21.1 compatible NeoForge</li>
+            <li>At least 4 GB RAM assigned to the client</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">2. Download the modpack</h2>
+          <p class="mt-4 text-slate-300">Click the "Open Modpack" link on the homepage or use the direct Google Drive link. After download, verify the SHA256 checksum (displayed on the download page).</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">3. Install NeoForge</h2>
+          <ol class="list-decimal ml-6 mt-4 space-y-2 text-slate-300">
+            <li>Open your launcher and add a new installation for Minecraft 1.21.1.</li>
+            <li>Install NeoForge 1.21.1 and point the launcher to it.</li>
+            <li>Create a fresh profile and assign at least 4 GB RAM.</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">4. Import modpack</h2>
+          <p class="mt-4 text-slate-300">If your launcher supports import, import the provided profile. Otherwise, copy the <code class="bg-white/5 px-2 py-1 rounded">mods</code> and <code class="bg-white/5 px-2 py-1 rounded">config</code> folders into your <code class="bg-white/5 px-2 py-1 rounded">.minecraft</code> directories.</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">5. Common issues & fixes</h2>
+          <ul class="list-disc ml-6 mt-4 space-y-2 text-slate-300">
+            <li><strong>Crash on launch:</strong> Check the launcher logs, remove any extra mods not in the pack, and ensure correct NeoForge version.</li>
+            <li><strong>Missing dependencies:</strong> Re-download the modpack and confirm all ZIPs were extracted.</li>
+            <li><strong>Black screen or texture errors:</strong> Update GPU drivers and increase JVM memory.</li>
+          </ul>
+        </section>
+      </article>
     </section>
 
-    <section>
-      <h2 class="text-xl font-semibold mt-6">2. Download the modpack</h2>
-      <p class="mt-2">Click the "Open Modpack" link on the homepage or use the direct Google Drive link. After download, verify the SHA256 checksum (displayed on the download page).</p>
-      <figure class="mt-4">
-        <img src="/images/install-step-download.png" alt="Download modpack" loading="lazy" class="rounded border" />
-        <figcaption class="text-sm text-slate-300 mt-2">Screenshot: Modpack download (placeholder)</figcaption>
-      </figure>
-    </section>
+    <section id="content_ru" style="display:none">
+      <h1 class="text-4xl font-bold mb-8">Как установить модпак (NeoForge 1.21.1)</h1>
 
-    <section>
-      <h2 class="text-xl font-semibold mt-6">3. Install NeoForge</h2>
-      <ol class="list-decimal ml-6 mt-2">
-        <li>Open your launcher and add a new installation for Minecraft 1.21.1.</li>
-        <li>Install NeoForge 1.21.1 and point the launcher to it.</li>
-        <li>Create a fresh profile and assign at least 4 GB RAM.</li>
-      </ol>
-    </section>
+      <article class="space-y-8">
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">1. Требования</h2>
+          <ul class="list-disc ml-6 mt-4 space-y-2 text-slate-300">
+            <li>Java 17+ (рекомендуется)</li>
+            <li>NeoForge для Minecraft 1.21.1</li>
+            <li>Минимум 4 ГБ ОЗУ для клиента</li>
+          </ul>
+        </section>
 
-    <section>
-      <h2 class="text-xl font-semibold mt-6">4. Import modpack</h2>
-      <p class="mt-2">If your launcher supports import, import the provided profile. Otherwise, copy the `mods` and `config` folders into your `.minecraft/mods` and `.minecraft/config` directories.</p>
-    </section>
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">2. Скачай модпак</h2>
+          <p class="mt-4 text-slate-300">Нажми кнопку "Открыть модпак" на главной странице или используй прямую ссылку на Google Drive. После скачивания проверь контрольную сумму SHA256.</p>
+        </section>
 
-    <section>
-      <h2 class="text-xl font-semibold mt-6">5. Common issues & fixes</h2>
-      <ul class="list-disc ml-6 mt-2">
-        <li><strong>Crash on launch:</strong> Check the launcher logs, remove any extra mods not in the pack, and ensure correct NeoForge version.</li>
-        <li><strong>Missing dependencies:</strong> Re-download the modpack and confirm all ZIPs were extracted.</li>
-        <li><strong>Black screen or texture errors:</strong> Update GPU drivers and increase JVM memory.</li>
-      </ul>
-    </section>
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">3. Установи NeoForge</h2>
+          <ol class="list-decimal ml-6 mt-4 space-y-2 text-slate-300">
+            <li>Открой лаунчер и создай новую установку для Minecraft 1.21.1.</li>
+            <li>Установи NeoForge 1.21.1 и выбери его в настройках.</li>
+            <li>Создай новый профиль и выдели минимум 4 ГБ ОЗУ.</li>
+          </ol>
+        </section>
 
-    <section class="mt-8">
-      <a href="/" class="inline-block bg-emerald-500 px-4 py-2 rounded font-semibold text-slate-900">Back to home</a>
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">4. Импортируй модпак</h2>
+          <p class="mt-4 text-slate-300">Если твой лаунчер поддерживает импорт, используй его. Иначе скопируй папки <code class="bg-white/5 px-2 py-1 rounded">mods</code> и <code class="bg-white/5 px-2 py-1 rounded">config</code> в твою папку <code class="bg-white/5 px-2 py-1 rounded">.minecraft</code>.</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold border-b border-brass pb-3">5. Частые проблемы и их решения</h2>
+          <ul class="list-disc ml-6 mt-4 space-y-2 text-slate-300">
+            <li><strong>Краш при запуске:</strong> Проверь логи лаунчера, удали ненужные моды, убедись что выбран правильный NeoForge.</li>
+            <li><strong>Отсутствуют зависимости:</strong> Скачай модпак заново и убедись что все ZIP-архивы распакованы.</li>
+            <li><strong>Чёрный экран или ошибки текстур:</strong> Обнови драйверы видеокарты и увеличь JVM память.</li>
+          </ul>
+        </section>
+      </article>
     </section>
   </main>
+
+  <script>
+    const stored = localStorage.getItem('create-aeronautics-language');
+    let lang = stored || (navigator.language && navigator.language.startsWith('ru') ? 'ru' : 'en');
+
+    function showLang(l){
+      document.getElementById('content_en').style.display = l === 'en' ? 'block' : 'none';
+      document.getElementById('content_ru').style.display = l === 'ru' ? 'block' : 'none';
+      document.getElementById('pageTitle').textContent = l === 'ru' ? 'Как установить Create Aeronautics' : 'Install Create Aeronautics — Step-by-step';
+      document.getElementById('pageDesc').setAttribute('content', l === 'ru' ? 'Гайд по установке Create Aeronautics: настройка NeoForge, импорт модпака, решение проблем.' : 'Install guide for Create Aeronautics server: NeoForge setup, modpack import, common fixes.');
+      document.getElementById('langSwitchText').textContent = l === 'ru' ? 'EN' : 'RU';
+    }
+
+    showLang(lang);
+
+    document.getElementById('langSwitch').addEventListener('click', ()=>{
+      const newLang = lang === 'ru' ? 'en' : 'ru';
+      lang = newLang;
+      localStorage.setItem('create-aeronautics-language', newLang);
+      showLang(newLang);
+    });
+  </script>
 </body>
 </html>
