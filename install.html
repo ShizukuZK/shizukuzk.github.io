@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Install Create Aeronautics — Step-by-step</title>
+  <meta name="description" content="Install guide for Create Aeronautics server: NeoForge setup, modpack import, common fixes.">
+  <link rel="canonical" href="https://shizukuzk.github.io/install.html" />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#08110d">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100">
+  <main class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">How to install the modpack (NeoForge 1.21.1)</h1>
+
+    <section>
+      <h2 class="text-xl font-semibold mt-4">1. Requirements</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <li>Java 17+ (recommended)</li>
+        <li>Minecraft 1.21.1 compatible NeoForge</li>
+        <li>At least 4 GB RAM assigned to the client</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mt-6">2. Download the modpack</h2>
+      <p class="mt-2">Click the "Open Modpack" link on the homepage or use the direct Google Drive link. After download, verify the SHA256 checksum (displayed on the download page).</p>
+      <figure class="mt-4">
+        <img src="/images/install-step-download.png" alt="Download modpack" loading="lazy" class="rounded border" />
+        <figcaption class="text-sm text-slate-300 mt-2">Screenshot: Modpack download (placeholder)</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mt-6">3. Install NeoForge</h2>
+      <ol class="list-decimal ml-6 mt-2">
+        <li>Open your launcher and add a new installation for Minecraft 1.21.1.</li>
+        <li>Install NeoForge 1.21.1 and point the launcher to it.</li>
+        <li>Create a fresh profile and assign at least 4 GB RAM.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mt-6">4. Import modpack</h2>
+      <p class="mt-2">If your launcher supports import, import the provided profile. Otherwise, copy the `mods` and `config` folders into your `.minecraft/mods` and `.minecraft/config` directories.</p>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mt-6">5. Common issues & fixes</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <li><strong>Crash on launch:</strong> Check the launcher logs, remove any extra mods not in the pack, and ensure correct NeoForge version.</li>
+        <li><strong>Missing dependencies:</strong> Re-download the modpack and confirm all ZIPs were extracted.</li>
+        <li><strong>Black screen or texture errors:</strong> Update GPU drivers and increase JVM memory.</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <a href="/" class="inline-block bg-emerald-500 px-4 py-2 rounded font-semibold text-slate-900">Back to home</a>
+    </section>
+  </main>
+</body>
+</html>

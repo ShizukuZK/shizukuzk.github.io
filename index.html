@@ -35,6 +35,7 @@
   <meta name="twitter:image" content="https://shizukuzk.github.io/og-image.svg" />
   <meta name="twitter:image:alt" content="Create Aeronautics green industrial Minecraft server banner" />
   <meta name="twitter:url" content="https://shizukuzk.github.io/" />
+  <link rel="manifest" href="/manifest.json">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -217,10 +218,12 @@
         </div>
       </a>
 
-      <nav class="hidden items-center gap-6 md:flex">
+      <nav class="hidden items-center gap-6 md:flex" aria-label="Primary navigation">
         <a id="navAbout" class="text-sm text-slate-300 transition hover:text-brass" href="#about">About</a>
         <a id="navJoin" class="text-sm text-slate-300 transition hover:text-brass" href="#join">How to Join</a>
         <a id="navServerInfo" class="text-sm text-slate-300 transition hover:text-brass" href="#server-info">Server Info</a>
+        <a id="navInstall" class="text-sm text-slate-300 transition hover:text-brass" href="/install.html">Install</a>
+        <a id="navChangelog" class="text-sm text-slate-300 transition hover:text-brass" href="/changelog.html">Changelog</a>
         <a id="navDiscord" class="text-sm text-slate-300 transition hover:text-brass" href="#discord">Discord</a>
       </nav>
 
@@ -530,6 +533,31 @@
   }
   </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What should I do if NeoForge fails to start?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Make sure Java is up-to-date (preferably Java 17+), delete and recreate your launcher profile, and confirm NeoForge 1.21.1 is selected. See /install.html for step-by-step troubleshooting." 
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I verify the modpack integrity?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We publish a SHA256 checksum on the modpack page. After download, compute the checksum and compare to the published value to ensure files are intact." 
+        }
+      }
+    ]
+  }
+  </script>
+
   <script>
     const translations = {
       en: {
@@ -816,6 +844,51 @@
         });
       }, 1800);
     });
+
+    // Cookie banner and conditional analytics (Plausible) loading
+    function loadAnalytics(){
+      if (window._analyticsLoaded) return;
+      window._analyticsLoaded = true;
+      const s = document.createElement('script');
+      s.defer = true;
+      s.setAttribute('data-domain','shizukuzk.github.io');
+      s.src = 'https://plausible.io/js/plausible.js';
+      document.head.appendChild(s);
+    }
+
+    function showCookieBanner(){
+      if (localStorage.getItem('ca_cookie_consent')) return;
+      const banner = document.createElement('div');
+      banner.id = 'cookieBanner';
+      banner.setAttribute('role','dialog');
+      banner.setAttribute('aria-live','polite');
+      banner.innerHTML = `
+        <div style="position:fixed;left:16px;right:16px;bottom:16px;z-index:60;background:rgba(5,8,7,0.92);color:#e7edf2;border:1px solid rgba(255,255,255,0.06);padding:12px 16px;border-radius:12px;display:flex;gap:12px;align-items:center;">
+          <div style="flex:1">This site uses lightweight analytics to improve the experience. Do you accept anonymous analytics?</div>
+          <div style="display:flex;gap:8px">
+            <button id="cookieAccept" style="background:#a3e635;color:#07110d;border-radius:8px;padding:8px 12px;border:none;font-weight:600">Accept</button>
+            <button id="cookieDecline" style="background:transparent;border:1px solid rgba(255,255,255,0.08);color:#e7edf2;border-radius:8px;padding:8px 12px">Decline</button>
+          </div>
+        </div>`;
+      document.body.appendChild(banner);
+      document.getElementById('cookieAccept').addEventListener('click', ()=>{
+        localStorage.setItem('ca_cookie_consent','accepted');
+        loadAnalytics();
+        banner.remove();
+      });
+      document.getElementById('cookieDecline').addEventListener('click', ()=>{
+        localStorage.setItem('ca_cookie_consent','declined');
+        banner.remove();
+      });
+    }
+
+    if (localStorage.getItem('ca_cookie_consent') === 'accepted') loadAnalytics();
+    else showCookieBanner();
+
+    // Register a minimal service worker for offline caching (best-effort)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', (event) => {

@@ -1,0 +1,15 @@
+{
+  "name": "Create Aeronautics",
+  "short_name": "Aeronautics",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08110d",
+  "theme_color": "#08110d",
+  "icons": [
+    {
+      "src": "/og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml"
+    }
+  ]
+}
