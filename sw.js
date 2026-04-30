@@ -1,4 +1,4 @@
-const CACHE_NAME = 'create-aero-v3';
+const CACHE_NAME = 'create-aero-v4';
 const URLS = [
   '/',
   '/index.html',
@@ -6,7 +6,9 @@ const URLS = [
   '/changelog.html',
   '/privacy.html',
   '/404.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/og-image.svg',
+  '/assets/site.css'
 ];
 
 self.addEventListener('install', (e) => {
@@ -28,6 +30,7 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
   e.respondWith(
     caches.match(e.request)
       .then((r) => r || fetch(e.request))

@@ -36,6 +36,9 @@
   <meta name="twitter:image:alt" content="Create Aeronautics green industrial Minecraft server banner" />
   <meta name="twitter:url" content="https://shizukuzk.github.io/" />
   <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/og-image.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/og-image.svg">
+  <meta name="msapplication-TileImage" content="/og-image.svg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -63,53 +66,14 @@
     "image": "https://shizukuzk.github.io/og-image.svg"
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            copper: '#34d399',
-            brass: '#a3e635',
-            steel: '#8f9aa3',
-            ink: '#07110d',
-            panel: 'rgba(15, 20, 27, 0.72)',
-          },
-          boxShadow: {
-            glow: '0 0 40px rgba(52, 211, 153, 0.22)',
-          },
-          backgroundImage: {
-            'grid-fine': 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
-            'hero-radial': 'radial-gradient(circle at top, rgba(52,211,153,0.22), transparent 34%), radial-gradient(circle at 20% 20%, rgba(163,230,53,0.16), transparent 22%), radial-gradient(circle at 80% 15%, rgba(34,197,94,0.12), transparent 20%)',
-          },
-          animation: {
-            floatSlow: 'floatSlow 9s ease-in-out infinite',
-            pulseGlow: 'pulseGlow 5s ease-in-out infinite',
-          },
-          keyframes: {
-            floatSlow: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-10px)' },
-            },
-            pulseGlow: {
-              '0%, 100%': { opacity: '0.7' },
-              '50%': { opacity: '1' },
-            },
-          },
-        },
-      },
-    }
-  </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/assets/site.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
-
     html {
       scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background:
         radial-gradient(circle at top, rgba(52,211,153,0.16), transparent 28%),
         radial-gradient(circle at 85% 15%, rgba(163,230,53,0.10), transparent 20%),
@@ -118,7 +82,7 @@
     }
 
     .display-font {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Segoe UI', 'Trebuchet MS', Arial, sans-serif;
       letter-spacing: 0.04em;
     }
 
@@ -222,6 +186,7 @@
         <a href="#about" class="text-sm text-slate-300 transition hover:text-brass"><span id="navAbout">About</span></a>
         <a href="#join" class="text-sm text-slate-300 transition hover:text-brass"><span id="navJoin">How to Join</span></a>
         <a href="#server-info" class="text-sm text-slate-300 transition hover:text-brass"><span id="navServerInfo">Server Info</span></a>
+        <a href="#discord" class="text-sm text-slate-300 transition hover:text-brass"><span id="navDiscord">Discord</span></a>
         <a id="navChangelog" class="text-sm text-slate-300 transition hover:text-brass" href="/changelog.html">Changelog</a>
       </nav>
 
@@ -731,7 +696,8 @@
     document.getElementById('navAbout').textContent = dictionary.navAbout;
     document.getElementById('navJoin').textContent = dictionary.navJoin;
     document.getElementById('navServerInfo').textContent = dictionary.navServerInfo;
-    document.getElementById('navDiscord').textContent = dictionary.navDiscord;
+    const navDiscord = document.getElementById('navDiscord');
+    if (navDiscord) navDiscord.textContent = dictionary.navDiscord;
     document.getElementById('navChangelog').textContent = dictionary.navChangelog || 'Changelog';
     document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + selectedLanguage);
     document.getElementById('navGetIp').textContent = dictionary.navGetIp;
@@ -798,102 +764,121 @@
     document.getElementById('discordButton').setAttribute('href', dictionary.discordUrl);
     langToggleText.textContent = selectedLanguage === 'ru' ? 'EN' : 'RU';
 
-    // Initialize Lucide icons with retry mechanism
-    function initLucideIcons() {
-      if (typeof lucide === 'undefined') {
-        setTimeout(initLucideIcons, 100);
-        return;
+    // Local icon render with graceful fallback (no external CDN required)
+    (function(){
+      function createIconsIfReady(){
+        if (typeof lucide === 'undefined' || !lucide || typeof lucide.createIcons !== 'function') return false;
+        try{
+          lucide.createIcons();
+          document.querySelectorAll('[data-lucide]').forEach((icon) => {
+            icon.setAttribute('aria-hidden', 'true');
+            icon.setAttribute('focusable', 'false');
+          });
+          return true;
+        }catch(e){
+          console.warn('Lucide createIcons failed', e);
+          return false;
+        }
       }
-      try {
-        lucide.createIcons();
-        document.querySelectorAll('svg.lucide').forEach((icon) => {
+
+      function applyIconFallback(){
+        const emojiByIcon = {
+          rocket: '🚀',
+          languages: '🌐',
+          satellite: '📡',
+          'arrow-down': '↓',
+          'layers-3': '▦',
+          'settings-2': '⚙',
+          wind: '〰',
+          construction: '🔧',
+          'shield-check': '🛡',
+          'map-pinned': '📍',
+          download: '⬇',
+          copy: '⧉',
+          check: '✓',
+          'alert-triangle': '⚠',
+          server: '🖧',
+          'badge-info': 'ℹ',
+          'message-circle': '💬',
+          'chevron-up': '↑'
+        };
+
+        document.querySelectorAll('[data-lucide]').forEach((icon) => {
+          if (icon.getAttribute('data-icon-fallback') === '1') return;
+          const key = icon.getAttribute('data-lucide') || '';
+          icon.textContent = emojiByIcon[key] || '•';
+          icon.style.fontStyle = 'normal';
+          icon.style.display = 'inline-flex';
+          icon.style.alignItems = 'center';
+          icon.style.justifyContent = 'center';
+          icon.style.lineHeight = '1';
           icon.setAttribute('aria-hidden', 'true');
           icon.setAttribute('focusable', 'false');
+          icon.setAttribute('data-icon-fallback', '1');
         });
-      } catch (e) {
-        console.warn('Lucide initialization warning:', e);
       }
-    }
-    initLucideIcons();
 
-    // Ensure langToggle is properly bound
-    if (langToggle && typeof langToggle.addEventListener === 'function') {
-      langToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        const newLang = selectedLanguage === 'ru' ? 'en' : 'ru';
-        localStorage.setItem('create-aeronautics-language', newLang);
-        document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + newLang);
-        const newDict = translations[newLang];
-        document.documentElement.lang = newLang;
-        document.querySelector('meta[property="og:title"]').setAttribute('content', newDict.pageTitle);
-        document.querySelector('meta[property="og:description"]').setAttribute('content', newDict.pageDescription);
-        document.querySelector('meta[name="twitter:title"]').setAttribute('content', newDict.pageTitle);
-        document.querySelector('meta[name="twitter:description"]').setAttribute('content', newDict.pageDescription);
-        document.getElementById('pageDescription').setAttribute('content', newDict.pageDescription);
-        window.location.reload();
-      });
-    }
+      function initLucideIcons(){
+        if (createIconsIfReady()) return;
+        applyIconFallback();
+      }
 
-    // Ensure copyButton works
-    if (copyButton && typeof copyButton.addEventListener === 'function') {
-      copyButton.addEventListener('click', async function(e) {
-        e.preventDefault();
-        try {
-          await navigator.clipboard.writeText(serverIp);
-          copyStatus.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
-          initLucideIcons();
-        } catch (error) {
-          copyStatus.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (selectedLanguage === 'ru' ? 'Ошибка копирования' : 'Copy failed') + '</span>';
-          initLucideIcons();
+      // expose for re-init after dynamic changes
+      window._reinitLucide = initLucideIcons;
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLucideIcons);
+      } else {
+        initLucideIcons();
+      }
+    })();
+
+    // Ensure langToggle and other UI handlers are bound after DOM ready
+    (function(){
+      function bindUi(){
+        const langToggleEl = document.getElementById('langToggle');
+        if (langToggleEl && typeof langToggleEl.addEventListener === 'function') {
+          langToggleEl.addEventListener('click', function(e){
+            e.preventDefault();
+            const current = localStorage.getItem('create-aeronautics-language');
+            const inferred = current && translations[current] ? current : (isCisLocale ? 'ru' : 'en');
+            const newLang = inferred === 'ru' ? 'en' : 'ru';
+            localStorage.setItem('create-aeronautics-language', newLang);
+            // reload to apply cleanly
+            window.location.reload();
+          });
         }
-        
-        clearTimeout(window.copyStatusReset);
-        window.copyStatusReset = setTimeout(() => {
-          copyStatus.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dictionary.copyStatusText + '</span>';
-          initLucideIcons();
-        }, 1800);
-      });
-    }
 
-    // Cookie banner and conditional analytics (Plausible) loading
-    function loadAnalytics(){
-      if (window._analyticsLoaded) return;
-      window._analyticsLoaded = true;
-      const s = document.createElement('script');
-      s.defer = true;
-      s.setAttribute('data-domain','shizukuzk.github.io');
-      s.src = 'https://plausible.io/js/plausible.js';
-      document.head.appendChild(s);
-    }
+        // copy button binding
+        const copyBtn = document.getElementById('copyButton');
+        const copyStatusEl = document.getElementById('copyStatus');
+        if (copyBtn && typeof copyBtn.addEventListener === 'function' && copyStatusEl) {
+          copyBtn.addEventListener('click', async function(e){
+            e.preventDefault();
+            try{
+              await navigator.clipboard.writeText(serverIp);
+              copyStatusEl.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (document.documentElement.lang === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
+              if (window._reinitLucide) window._reinitLucide();
+            }catch(err){
+              copyStatusEl.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (document.documentElement.lang === 'ru' ? 'Ошибка копирования' : 'Copy failed') + '</span>';
+              if (window._reinitLucide) window._reinitLucide();
+            }
 
-    function showCookieBanner(){
-      if (localStorage.getItem('ca_cookie_consent')) return;
-      const banner = document.createElement('div');
-      banner.id = 'cookieBanner';
-      banner.setAttribute('role','dialog');
-      banner.setAttribute('aria-live','polite');
-      banner.innerHTML = `
-        <div style="position:fixed;left:16px;right:16px;bottom:16px;z-index:60;background:rgba(5,8,7,0.92);color:#e7edf2;border:1px solid rgba(255,255,255,0.06);padding:12px 16px;border-radius:12px;display:flex;gap:12px;align-items:center;">
-          <div style="flex:1">This site uses lightweight analytics to improve the experience. Do you accept anonymous analytics?</div>
-          <div style="display:flex;gap:8px">
-            <button id="cookieAccept" style="background:#a3e635;color:#07110d;border-radius:8px;padding:8px 12px;border:none;font-weight:600">Accept</button>
-            <button id="cookieDecline" style="background:transparent;border:1px solid rgba(255,255,255,0.08);color:#e7edf2;border-radius:8px;padding:8px 12px">Decline</button>
-          </div>
-        </div>`;
-      document.body.appendChild(banner);
-      document.getElementById('cookieAccept').addEventListener('click', ()=>{
-        localStorage.setItem('ca_cookie_consent','accepted');
-        loadAnalytics();
-        banner.remove();
-      });
-      document.getElementById('cookieDecline').addEventListener('click', ()=>{
-        localStorage.setItem('ca_cookie_consent','declined');
-        banner.remove();
-      });
-    }
+            clearTimeout(window.copyStatusReset);
+            window.copyStatusReset = setTimeout(() => {
+              const dict = translations[localStorage.getItem('create-aeronautics-language')] || translations[isCisLocale ? 'ru' : 'en'];
+              copyStatusEl.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dict.copyStatusText + '</span>';
+              if (window._reinitLucide) window._reinitLucide();
+            }, 1800);
+          });
+        }
+      }
 
-    if (localStorage.getItem('ca_cookie_consent') === 'accepted') loadAnalytics();
-    else showCookieBanner();
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindUi);
+      else bindUi();
+    })();
+
+    // External analytics disabled to keep the site fully static/offline-friendly.
 
     // Register a minimal service worker for offline caching (best-effort)
     if ('serviceWorker' in navigator) {

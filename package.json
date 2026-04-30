@@ -1,0 +1,11 @@
+{
+  "name": "create-aeronautics-site",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i ./assets/input.css -o ./assets/site.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}
