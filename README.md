@@ -29,5 +29,5 @@ Or run the helper script:
 
 ## Links already in the page
 
-- Modpack: https://drive.google.com/file/d/1H3vE9kGuQZ5046FujBAK1dLKveEQXLO_/view?usp=sharing
+- Modpack: https://drive.google.com/file/d/1sX0dU2f2vOmm83cnEOTUEFWP4JjrPY-I/view
 - Discord: https://discord.gg/xrxKm5GW
