@@ -14,6 +14,7 @@ const URLS = [
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(URLS).catch(()=>{});
@@ -27,7 +28,7 @@ self.addEventListener('activate', (e) => {
       return Promise.all(
         names.filter(name => name !== CACHE_NAME).map(name => caches.delete(name))
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
