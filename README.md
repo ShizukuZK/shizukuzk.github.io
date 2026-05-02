@@ -1,4 +1,3 @@
-# Create Aeronautics landing page
 
 Static one-page site for GitHub Pages.
 
@@ -29,5 +28,4 @@ Or run the helper script:
 
 ## Links already in the page
 
-- Modpack: https://drive.google.com/file/d/1sX0dU2f2vOmm83cnEOTUEFWP4JjrPY-I/view
-- Discord: https://discord.gg/xrxKm5GW
+ Modpack: https://drive.google.com/file/d/1ABs3sdeBDOfveW6xAYmYeSIXW0W_8lDE/view?usp=sharing
