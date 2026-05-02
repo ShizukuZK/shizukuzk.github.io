@@ -523,6 +523,13 @@
 
   <script src="/assets/lucide-lite.js"></script>
   <script>
+    // Restore saved language EARLY before any DOM rendering
+    const savedLang = localStorage.getItem('create-aeronautics-language');
+    if (savedLang && ['en', 'ru'].includes(savedLang)) {
+      document.documentElement.lang = savedLang;
+    }
+  </script>
+  <script>
     const translations = {
       en: {
         navChangelog: 'Changelog',
@@ -915,6 +922,13 @@
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
+
+    // Guarantee icons render after lucide-lite loads
+    setTimeout(() => {
+      if (typeof window.lucide !== 'undefined' && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }, 100);
   </script>
 </body>
 </html>
