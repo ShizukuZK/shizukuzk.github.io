@@ -702,7 +702,7 @@
         };
 
         try {
-          const response = await fetch('/config.json', { cache: 'no-store' });
+          const response = await fetch('/config.json?v=16', { cache: 'no-store' });
           if (!response.ok) return defaults;
           const loaded = await response.json();
           return { ...defaults, ...loaded };
