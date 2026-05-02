@@ -57,4 +57,72 @@
     }
   }
   autoInit();
+
+  function getCurrentLanguage(){
+    const stored = localStorage.getItem('create-aeronautics-language');
+    if (stored === 'ru' || stored === 'en') return stored;
+    const fromQuery = new URLSearchParams(window.location.search).get('lang');
+    if (fromQuery === 'ru' || fromQuery === 'en') return fromQuery;
+    return document.documentElement.lang === 'ru' ? 'ru' : 'en';
+  }
+
+  function toggleLanguage(){
+    const nextLanguage = getCurrentLanguage() === 'ru' ? 'en' : 'ru';
+    localStorage.setItem('create-aeronautics-language', nextLanguage);
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', nextLanguage);
+    window.location.href = url.toString();
+  }
+
+  async function copyServerIp(){
+    const serverIp = document.getElementById('serverIp');
+    const copyStatus = document.getElementById('copyStatus');
+    const copyStatusText = document.getElementById('copyStatusText');
+    const language = getCurrentLanguage();
+    const successText = language === 'ru' ? 'Скопировано!' : 'Copied!';
+    const failureText = language === 'ru' ? 'Ошибка копирования' : 'Copy failed';
+
+    if (!serverIp) return;
+
+    try {
+      await navigator.clipboard.writeText(serverIp.textContent.trim());
+      if (copyStatus) {
+        copyStatus.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + successText + '</span>';
+        if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+      }
+    } catch (error) {
+      if (copyStatus) {
+        copyStatus.innerHTML = '<i data-lucide="alert-triangle" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + failureText + '</span>';
+        if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+      }
+    }
+
+    clearTimeout(window.copyStatusReset);
+    window.copyStatusReset = setTimeout(() => {
+      if (copyStatusText) {
+        copyStatusText.textContent = language === 'ru' ? 'Нажми, чтобы скопировать' : 'Click to copy';
+      }
+      if (copyStatus) {
+        copyStatus.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (language === 'ru' ? 'Нажми, чтобы скопировать' : 'Click to copy') + '</span>';
+        if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+      }
+    }, 1800);
+  }
+
+  document.addEventListener('click', function(event){
+    const target = event.target && typeof event.target.closest === 'function' ? event.target.closest('#langToggle, #copyButton') : null;
+    if (!target) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if (target.id === 'langToggle') {
+      toggleLanguage();
+      return;
+    }
+
+    if (target.id === 'copyButton') {
+      copyServerIp();
+    }
+  }, true);
 })();

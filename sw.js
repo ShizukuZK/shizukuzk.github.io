@@ -1,4 +1,4 @@
-const CACHE_NAME = 'create-aero-v12';
+const CACHE_NAME = 'create-aero-v13';
 const URLS = [
   '/',
   '/index.html',
@@ -36,6 +36,19 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
 
   if (new URL(e.request.url).pathname === '/config.json') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, responseClone)).catch(()=>{});
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  if (new URL(e.request.url).pathname === '/assets/lucide-lite.js') {
     e.respondWith(
       fetch(e.request)
         .then((response) => {
