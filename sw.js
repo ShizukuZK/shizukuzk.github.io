@@ -48,6 +48,19 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+  if (e.request.destination === 'document') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, responseClone)).catch(()=>{});
+          return response;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('/index.html')))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request)
       .then((r) => r || fetch(e.request))
