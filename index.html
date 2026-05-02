@@ -740,11 +740,15 @@
       const serverIp = (siteConfig.serverIp || document.getElementById('serverIp').textContent.trim()).trim();
       let currentLanguage = selectedLanguage;
       let currentDictionary = translations[currentLanguage];
+      window.__currentLanguage = currentLanguage;
+      window.__currentDictionary = currentDictionary;
 
       function applyLanguage(nextLanguage, persist = true) {
         const normalized = translations[nextLanguage] ? nextLanguage : (siteConfig.defaultLanguage === 'ru' ? 'ru' : 'en');
         currentLanguage = normalized;
         currentDictionary = translations[normalized];
+        window.__currentLanguage = currentLanguage;
+        window.__currentDictionary = currentDictionary;
 
         if (persist) {
           localStorage.setItem('create-aeronautics-language', normalized);
@@ -960,7 +964,7 @@
         if (langToggleEl && typeof langToggleEl.addEventListener === 'function') {
           langToggleEl.addEventListener('click', function(e){
             e.preventDefault();
-            const nextLang = currentLanguage === 'ru' ? 'en' : 'ru';
+            const nextLang = window.__currentLanguage === 'ru' ? 'en' : 'ru';
             applyLanguage(nextLang, true);
             if (typeof refreshServerStatus === 'function') refreshServerStatus();
             if (window._reinitLucide) window._reinitLucide();
@@ -984,7 +988,8 @@
 
             clearTimeout(window.copyStatusReset);
             window.copyStatusReset = setTimeout(() => {
-              copyStatusEl.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + currentDictionary.copyStatusText + '</span>';
+              const dict = window.__currentDictionary || translations.en;
+              copyStatusEl.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dict.copyStatusText + '</span>';
               if (window._reinitLucide) window._reinitLucide();
             }, 1800);
           });
