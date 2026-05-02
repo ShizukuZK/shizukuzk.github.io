@@ -1,4 +1,4 @@
-const CACHE_NAME = 'create-aero-v6';
+const CACHE_NAME = 'create-aero-v7';
 const URLS = [
   '/',
   '/index.html',
@@ -8,6 +8,7 @@ const URLS = [
   '/404.html',
   '/manifest.json',
   '/og-image.svg',
+  '/config.json',
   '/assets/site.css',
   '/assets/lucide-lite.js'
 ];
