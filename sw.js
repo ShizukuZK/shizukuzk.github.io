@@ -1,4 +1,4 @@
-const CACHE_NAME = 'create-aero-v11';
+const CACHE_NAME = 'create-aero-v12';
 const URLS = [
   '/',
   '/index.html',
@@ -33,6 +33,20 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+
+  if (new URL(e.request.url).pathname === '/config.json') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, responseClone)).catch(()=>{});
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request)
       .then((r) => r || fetch(e.request))
