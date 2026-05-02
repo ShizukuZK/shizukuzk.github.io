@@ -1,4 +1,4 @@
-const CACHE_NAME = 'create-aero-v8';
+const CACHE_NAME = 'create-aero-v10';
 const URLS = [
   '/',
   '/index.html',

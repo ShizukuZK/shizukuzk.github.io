@@ -392,6 +392,11 @@
             <span id="modpackButtonText">Open Modpack</span>
           </a>
 
+          <div class="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+            <span id="serverStatusDot" class="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
+            <span id="serverStatusText">Checking server status...</span>
+          </div>
+
           <button id="copyButton" class="group mt-4 w-full rounded-[1.5rem] border border-brass/30 bg-gradient-to-r from-white/8 to-white/4 p-4 text-left transition hover:border-brass/60 hover:bg-white/10 sm:p-5">
             <span class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <span>
@@ -602,6 +607,10 @@
         discordButtonText: 'Join Discord',
         backToTopText: 'Back to top',
         discordUrl: 'https://discord.gg/xrxKm5GW',
+        serverStatusLoading: 'Checking server status...',
+        serverStatusOnline: 'Server online',
+        serverStatusOffline: 'Server offline',
+        serverStatusUnknown: 'Status unavailable',
       },
       ru: {
         navChangelog: 'Журнал изменений',
@@ -674,10 +683,32 @@
         discordButtonText: 'Открыть Discord',
         backToTopText: 'Наверх',
         discordUrl: 'https://discord.gg/xrxKm5GW',
+        serverStatusLoading: 'Проверяем статус сервера...',
+        serverStatusOnline: 'Сервер онлайн',
+        serverStatusOffline: 'Сервер офлайн',
+        serverStatusUnknown: 'Статус недоступен',
       },
     };
 
     (async function(){
+      async function loadSiteConfig(){
+        const defaults = {
+          modpackUrl: 'https://drive.google.com/file/d/1ABs3sdeBDOfveW6xAYmYeSIXW0W_8lDE/view',
+          serverIp: 'createaeronautics.joinserver.xyz',
+          discordUrl: 'https://discord.gg/xrxKm5GW',
+          defaultLanguage: 'en'
+        };
+
+        try {
+          const response = await fetch('/config.json', { cache: 'no-store' });
+          if (!response.ok) return defaults;
+          const loaded = await response.json();
+          return { ...defaults, ...loaded };
+        } catch (error) {
+          return defaults;
+        }
+      }
+
       async function detectCountryCode(){
         try{
           const controller = new AbortController();
@@ -692,102 +723,162 @@
         }
       }
 
+      const siteConfig = await loadSiteConfig();
       const country = await detectCountryCode();
       const cisCountries = ['RU','UA','BY','KZ','KG','AZ','AM','GE','MD','UZ','TJ','TM'];
       const isCisLocale = country ? cisCountries.includes(country) : /^(ru|uk|be|kk|ky|az|hy|ka|uz|tg|tt|mo)(-|$)/i.test(navigator.language || navigator.userLanguage || '');
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
       const savedLanguage = localStorage.getItem('create-aeronautics-language');
-      const selectedLanguage = translations[savedLanguage] ? savedLanguage : (isCisLocale ? 'ru' : 'en');
+      const selectedLanguage = translations[urlLang] ? urlLang : (translations[savedLanguage] ? savedLanguage : (translations[siteConfig.defaultLanguage] ? siteConfig.defaultLanguage : (isCisLocale ? 'ru' : 'en')));
       const copyButton = document.getElementById('copyButton');
       const copyStatus = document.getElementById('copyStatus');
       const langToggle = document.getElementById('langToggle');
       const langToggleText = document.getElementById('langToggleText');
-      const serverIp = document.getElementById('serverIp').textContent.trim();
-      const dictionary = translations[selectedLanguage];
+      const modpackButton = document.getElementById('modpackButton');
+      const serverIp = (siteConfig.serverIp || document.getElementById('serverIp').textContent.trim()).trim();
+      let currentLanguage = selectedLanguage;
+      let currentDictionary = translations[currentLanguage];
 
-      document.documentElement.lang = selectedLanguage;
-      document.getElementById('pageTitle').textContent = dictionary.pageTitle;
-      const pageDescription = document.getElementById('pageDescription');
-      const ogDescription = document.querySelector('meta[property="og:description"]');
-      const twitterDescription = document.querySelector('meta[name="twitter:description"]');
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+      function applyLanguage(nextLanguage, persist = true) {
+        const normalized = translations[nextLanguage] ? nextLanguage : (siteConfig.defaultLanguage === 'ru' ? 'ru' : 'en');
+        currentLanguage = normalized;
+        currentDictionary = translations[normalized];
 
-      pageDescription.setAttribute('content', dictionary.pageDescription);
-      ogDescription.setAttribute('content', dictionary.pageDescription);
-      twitterDescription.setAttribute('content', dictionary.pageDescription);
-      ogTitle.setAttribute('content', dictionary.pageTitle);
-      twitterTitle.setAttribute('content', dictionary.pageTitle);
-      document.getElementById('brandTagline').textContent = dictionary.brandTagline;
-      document.getElementById('navAbout').textContent = dictionary.navAbout;
-      document.getElementById('navJoin').textContent = dictionary.navJoin;
-      document.getElementById('navServerInfo').textContent = dictionary.navServerInfo;
-      const navDiscord = document.getElementById('navDiscord');
-      if (navDiscord) navDiscord.textContent = dictionary.navDiscord;
-      document.getElementById('navChangelog').textContent = dictionary.navChangelog || 'Changelog';
-      document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + selectedLanguage);
-      document.getElementById('navGetIp').textContent = dictionary.navGetIp;
-      document.getElementById('heroBadgeText').textContent = dictionary.heroBadgeText;
-      document.getElementById('heroTitle').textContent = dictionary.heroTitle;
-      document.getElementById('heroSubtitle').textContent = dictionary.heroSubtitle;
-      document.getElementById('heroJoinNow').textContent = dictionary.heroJoinNow;
-      document.getElementById('heroExplore').textContent = dictionary.heroExplore;
-      document.getElementById('heroCard1Label').textContent = dictionary.heroCard1Label;
-      document.getElementById('heroCard1Value').textContent = dictionary.heroCard1Value;
-      document.getElementById('heroCard2Label').textContent = dictionary.heroCard2Label;
-      document.getElementById('heroCard2Value').textContent = dictionary.heroCard2Value;
-      document.getElementById('heroCard3Label').textContent = dictionary.heroCard3Label;
-      document.getElementById('heroCard3Value').textContent = dictionary.heroCard3Value;
-      document.getElementById('signalLabel').textContent = dictionary.signalLabel;
-      document.getElementById('signalTitle').textContent = dictionary.signalTitle;
-      document.getElementById('feature1Title').textContent = dictionary.feature1Title;
-      document.getElementById('feature1Text').textContent = dictionary.feature1Text;
-      document.getElementById('feature2Title').textContent = dictionary.feature2Title;
-      document.getElementById('feature2Text').textContent = dictionary.feature2Text;
-      document.getElementById('feature3Title').textContent = dictionary.feature3Title;
-      document.getElementById('feature3Text').textContent = dictionary.feature3Text;
-      document.getElementById('feature4Title').textContent = dictionary.feature4Title;
-      document.getElementById('feature4Text').textContent = dictionary.feature4Text;
-      document.getElementById('aboutLabel').textContent = dictionary.aboutLabel;
-      document.getElementById('aboutTitle').textContent = dictionary.aboutTitle;
-      document.getElementById('aboutText1').textContent = dictionary.aboutText1;
-      document.getElementById('aboutText2').textContent = dictionary.aboutText2;
-      document.getElementById('aboutFeatureTitle').textContent = dictionary.aboutFeatureTitle;
-      document.getElementById('aboutBullet1').textContent = dictionary.aboutBullet1;
-      document.getElementById('aboutBullet2').textContent = dictionary.aboutBullet2;
-      document.getElementById('aboutBullet3').textContent = dictionary.aboutBullet3;
-      document.getElementById('communityLabel').textContent = dictionary.communityLabel;
-      document.getElementById('communityTitle').textContent = dictionary.communityTitle;
-      document.getElementById('communityText').textContent = dictionary.communityText;
-      document.getElementById('communityNote').textContent = dictionary.communityNote;
-      document.getElementById('joinLabel').textContent = dictionary.joinLabel;
-      document.getElementById('joinTitle').textContent = dictionary.joinTitle;
-      document.getElementById('step1Title').textContent = dictionary.step1Title;
-      document.getElementById('step1Text').textContent = dictionary.step1Text;
-    document.getElementById('step2Title').textContent = dictionary.step2Title;
-    document.getElementById('step2Text').textContent = dictionary.step2Text;
-    document.getElementById('step3Title').textContent = dictionary.step3Title;
-    document.getElementById('step3Text').textContent = dictionary.step3Text;
-    document.getElementById('serverInfoLabel').textContent = dictionary.serverInfoLabel;
-    document.getElementById('serverInfoTitle').textContent = dictionary.serverInfoTitle;
-    document.getElementById('serverInfoText').textContent = dictionary.serverInfoText;
-    document.getElementById('modpackButtonText').textContent = dictionary.modpackButtonText;
-    document.getElementById('ipLabel').textContent = dictionary.ipLabel;
-    document.getElementById('copyStatusText').textContent = dictionary.copyStatusText;
-    document.getElementById('versionLabel').textContent = dictionary.versionLabel;
-    document.getElementById('versionValue').textContent = dictionary.versionValue;
-    document.getElementById('communityLabel2').textContent = dictionary.communityLabel2;
-    document.getElementById('communityValue').textContent = dictionary.communityValue;
-    document.getElementById('setupTitle').textContent = dictionary.setupTitle;
-    document.getElementById('setupText').textContent = dictionary.setupText;
-    document.getElementById('helpTitle').textContent = dictionary.helpTitle;
-    document.getElementById('helpText').textContent = dictionary.helpText;
-    document.getElementById('discordLabel').textContent = dictionary.discordLabel;
-    document.getElementById('discordTitle').textContent = dictionary.discordTitle;
-    document.getElementById('discordText').textContent = dictionary.discordText;
-    document.getElementById('discordButtonText').textContent = dictionary.discordButtonText;
-    document.getElementById('backToTopText').textContent = dictionary.backToTopText;
-    document.getElementById('discordButton').setAttribute('href', dictionary.discordUrl);
-    langToggleText.textContent = selectedLanguage === 'ru' ? 'EN' : 'RU';
+        if (persist) {
+          localStorage.setItem('create-aeronautics-language', normalized);
+          const url = new URL(window.location.href);
+          url.searchParams.set('lang', normalized);
+          window.history.replaceState({}, '', url);
+        }
+
+        document.documentElement.lang = normalized;
+        if (modpackButton && siteConfig.modpackUrl) modpackButton.setAttribute('href', siteConfig.modpackUrl);
+        const serverIpEl = document.getElementById('serverIp');
+        if (serverIpEl && siteConfig.serverIp) serverIpEl.textContent = siteConfig.serverIp;
+        document.getElementById('pageTitle').textContent = currentDictionary.pageTitle;
+        const pageDescription = document.getElementById('pageDescription');
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+        const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+
+        pageDescription.setAttribute('content', currentDictionary.pageDescription);
+        ogDescription.setAttribute('content', currentDictionary.pageDescription);
+        twitterDescription.setAttribute('content', currentDictionary.pageDescription);
+        ogTitle.setAttribute('content', currentDictionary.pageTitle);
+        twitterTitle.setAttribute('content', currentDictionary.pageTitle);
+        document.getElementById('brandTagline').textContent = currentDictionary.brandTagline;
+        document.getElementById('navAbout').textContent = currentDictionary.navAbout;
+        document.getElementById('navJoin').textContent = currentDictionary.navJoin;
+        document.getElementById('navServerInfo').textContent = currentDictionary.navServerInfo;
+        const navDiscord = document.getElementById('navDiscord');
+        if (navDiscord) navDiscord.textContent = currentDictionary.navDiscord;
+        document.getElementById('navChangelog').textContent = currentDictionary.navChangelog || 'Changelog';
+        document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + normalized);
+        document.getElementById('navGetIp').textContent = currentDictionary.navGetIp;
+        document.getElementById('heroBadgeText').textContent = currentDictionary.heroBadgeText;
+        document.getElementById('heroTitle').textContent = currentDictionary.heroTitle;
+        document.getElementById('heroSubtitle').textContent = currentDictionary.heroSubtitle;
+        document.getElementById('heroJoinNow').textContent = currentDictionary.heroJoinNow;
+        document.getElementById('heroExplore').textContent = currentDictionary.heroExplore;
+        document.getElementById('heroCard1Label').textContent = currentDictionary.heroCard1Label;
+        document.getElementById('heroCard1Value').textContent = currentDictionary.heroCard1Value;
+        document.getElementById('heroCard2Label').textContent = currentDictionary.heroCard2Label;
+        document.getElementById('heroCard2Value').textContent = currentDictionary.heroCard2Value;
+        document.getElementById('heroCard3Label').textContent = currentDictionary.heroCard3Label;
+        document.getElementById('heroCard3Value').textContent = currentDictionary.heroCard3Value;
+        document.getElementById('signalLabel').textContent = currentDictionary.signalLabel;
+        document.getElementById('signalTitle').textContent = currentDictionary.signalTitle;
+        document.getElementById('feature1Title').textContent = currentDictionary.feature1Title;
+        document.getElementById('feature1Text').textContent = currentDictionary.feature1Text;
+        document.getElementById('feature2Title').textContent = currentDictionary.feature2Title;
+        document.getElementById('feature2Text').textContent = currentDictionary.feature2Text;
+        document.getElementById('feature3Title').textContent = currentDictionary.feature3Title;
+        document.getElementById('feature3Text').textContent = currentDictionary.feature3Text;
+        document.getElementById('feature4Title').textContent = currentDictionary.feature4Title;
+        document.getElementById('feature4Text').textContent = currentDictionary.feature4Text;
+        document.getElementById('aboutLabel').textContent = currentDictionary.aboutLabel;
+        document.getElementById('aboutTitle').textContent = currentDictionary.aboutTitle;
+        document.getElementById('aboutText1').textContent = currentDictionary.aboutText1;
+        document.getElementById('aboutText2').textContent = currentDictionary.aboutText2;
+        document.getElementById('aboutFeatureTitle').textContent = currentDictionary.aboutFeatureTitle;
+        document.getElementById('aboutBullet1').textContent = currentDictionary.aboutBullet1;
+        document.getElementById('aboutBullet2').textContent = currentDictionary.aboutBullet2;
+        document.getElementById('aboutBullet3').textContent = currentDictionary.aboutBullet3;
+        document.getElementById('communityLabel').textContent = currentDictionary.communityLabel;
+        document.getElementById('communityTitle').textContent = currentDictionary.communityTitle;
+        document.getElementById('communityText').textContent = currentDictionary.communityText;
+        document.getElementById('communityNote').textContent = currentDictionary.communityNote;
+        document.getElementById('joinLabel').textContent = currentDictionary.joinLabel;
+        document.getElementById('joinTitle').textContent = currentDictionary.joinTitle;
+        document.getElementById('step1Title').textContent = currentDictionary.step1Title;
+        document.getElementById('step1Text').textContent = currentDictionary.step1Text;
+        document.getElementById('step2Title').textContent = currentDictionary.step2Title;
+        document.getElementById('step2Text').textContent = currentDictionary.step2Text;
+        document.getElementById('step3Title').textContent = currentDictionary.step3Title;
+        document.getElementById('step3Text').textContent = currentDictionary.step3Text;
+        document.getElementById('serverInfoLabel').textContent = currentDictionary.serverInfoLabel;
+        document.getElementById('serverInfoTitle').textContent = currentDictionary.serverInfoTitle;
+        document.getElementById('serverInfoText').textContent = currentDictionary.serverInfoText;
+        document.getElementById('modpackButtonText').textContent = currentDictionary.modpackButtonText;
+        document.getElementById('ipLabel').textContent = currentDictionary.ipLabel;
+        document.getElementById('copyStatusText').textContent = currentDictionary.copyStatusText;
+        document.getElementById('versionLabel').textContent = currentDictionary.versionLabel;
+        document.getElementById('versionValue').textContent = currentDictionary.versionValue;
+        document.getElementById('communityLabel2').textContent = currentDictionary.communityLabel2;
+        document.getElementById('communityValue').textContent = currentDictionary.communityValue;
+        document.getElementById('setupTitle').textContent = currentDictionary.setupTitle;
+        document.getElementById('setupText').textContent = currentDictionary.setupText;
+        document.getElementById('helpTitle').textContent = currentDictionary.helpTitle;
+        document.getElementById('helpText').textContent = currentDictionary.helpText;
+        document.getElementById('discordLabel').textContent = currentDictionary.discordLabel;
+        document.getElementById('discordTitle').textContent = currentDictionary.discordTitle;
+        document.getElementById('discordText').textContent = currentDictionary.discordText;
+        document.getElementById('discordButtonText').textContent = currentDictionary.discordButtonText;
+        document.getElementById('backToTopText').textContent = currentDictionary.backToTopText;
+        document.getElementById('discordButton').setAttribute('href', currentDictionary.discordUrl);
+        langToggleText.textContent = normalized === 'ru' ? 'EN' : 'RU';
+      }
+
+      applyLanguage(selectedLanguage, false);
+
+      const serverStatusDot = document.getElementById('serverStatusDot');
+      const serverStatusText = document.getElementById('serverStatusText');
+
+      function setServerStatus(state, message) {
+        if (!serverStatusDot || !serverStatusText) return;
+        const stateClasses = {
+          online: 'h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.75)]',
+          offline: 'h-2.5 w-2.5 rounded-full bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.65)]',
+          loading: 'h-2.5 w-2.5 rounded-full bg-slate-500 animate-pulse',
+          unknown: 'h-2.5 w-2.5 rounded-full bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.55)]',
+        };
+        serverStatusDot.className = stateClasses[state] || stateClasses.unknown;
+        serverStatusText.textContent = message;
+      }
+
+      async function refreshServerStatus() {
+        setServerStatus('loading', currentDictionary.serverStatusLoading);
+
+        try {
+          const target = (siteConfig.serverIp || serverIp).replace(/[^a-zA-Z0-9.:-]/g, '');
+          const response = await fetch('https://api.mcsrvstat.us/3/' + target, { cache: 'no-store' });
+          if (!response.ok) throw new Error('status request failed');
+          const data = await response.json();
+          if (data && data.online) {
+            const onlineCount = data.players && typeof data.players.online === 'number' ? data.players.online : null;
+            const maxCount = data.players && typeof data.players.max === 'number' ? data.players.max : null;
+            const countText = onlineCount !== null ? ' · ' + onlineCount + (maxCount !== null ? '/' + maxCount : '') : '';
+            setServerStatus('online', currentDictionary.serverStatusOnline + countText);
+          } else {
+            setServerStatus('offline', currentDictionary.serverStatusOffline);
+          }
+        } catch (error) {
+          setServerStatus('unknown', currentDictionary.serverStatusUnknown);
+        }
+      }
+
+      refreshServerStatus();
 
     // Local icon render with graceful fallback (no external CDN required)
     (function(){
@@ -865,12 +956,10 @@
         if (langToggleEl && typeof langToggleEl.addEventListener === 'function') {
           langToggleEl.addEventListener('click', function(e){
             e.preventDefault();
-            const current = localStorage.getItem('create-aeronautics-language');
-            const inferred = current && translations[current] ? current : (isCisLocale ? 'ru' : 'en');
-            const newLang = inferred === 'ru' ? 'en' : 'ru';
-            localStorage.setItem('create-aeronautics-language', newLang);
-            // reload to apply cleanly
-            window.location.reload();
+            const nextLang = currentLanguage === 'ru' ? 'en' : 'ru';
+            applyLanguage(nextLang, true);
+            if (typeof refreshServerStatus === 'function') refreshServerStatus();
+            if (window._reinitLucide) window._reinitLucide();
           });
         }
 
@@ -891,8 +980,7 @@
 
             clearTimeout(window.copyStatusReset);
             window.copyStatusReset = setTimeout(() => {
-              const dict = translations[localStorage.getItem('create-aeronautics-language')] || translations[isCisLocale ? 'ru' : 'en'];
-              copyStatusEl.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + dict.copyStatusText + '</span>';
+              copyStatusEl.innerHTML = '<i data-lucide="copy" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + currentDictionary.copyStatusText + '</span>';
               if (window._reinitLucide) window._reinitLucide();
             }, 1800);
           });
