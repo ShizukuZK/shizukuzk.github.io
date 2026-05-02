@@ -66,6 +66,28 @@
     return document.documentElement.lang === 'ru' ? 'ru' : 'en';
   }
 
+  function syncGlobalLanguageState(language){
+    const normalized = language === 'ru' ? 'ru' : 'en';
+    window.currentLanguage = normalized;
+    window.currentDictionary = {
+      copyStatusText: normalized === 'ru' ? 'Нажми, чтобы скопировать' : 'Click to copy'
+    };
+    return normalized;
+  }
+
+  window.applyLanguage = function(nextLanguage, persist = true){
+    const normalized = syncGlobalLanguageState(nextLanguage);
+    if (persist) {
+      localStorage.setItem('create-aeronautics-language', normalized);
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', normalized);
+      window.location.href = url.toString();
+    }
+    return normalized;
+  };
+
+  syncGlobalLanguageState(getCurrentLanguage());
+
   function toggleLanguage(){
     const nextLanguage = getCurrentLanguage() === 'ru' ? 'en' : 'ru';
     localStorage.setItem('create-aeronautics-language', nextLanguage);
