@@ -8,7 +8,8 @@ const URLS = [
   '/404.html',
   '/manifest.json',
   '/og-image.svg',
-  '/assets/site.css'
+  '/assets/site.css',
+  '/assets/lucide-lite.js'
 ];
 
 self.addEventListener('install', (e) => {
