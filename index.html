@@ -384,8 +384,19 @@
           <span id="serverInfoLabel" class="section-label">Server Info</span>
           <h2 id="serverInfoTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">Click to copy your regional IP</h2>
           <p id="serverInfoText" class="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
-            Use the buttons below to get the modpack and connect. The site automatically shows the RU/CIS IP or the international IP so players can join with the right address for their region.
+            Choose the IP that matches your region, then copy it and join with the matching address.
           </p>
+
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            <button id="serverIpRuButton" type="button" class="rounded-[1.25rem] border border-brass/30 bg-white/8 px-4 py-3 text-left transition hover:border-brass/60 hover:bg-white/10">
+              <span id="serverIpRuLabel" class="block text-xs uppercase tracking-[0.24em] text-slate-400">RU / CIS</span>
+              <span class="mt-2 block text-sm font-semibold text-white">createaeronautics.joinserver.xyz</span>
+            </button>
+            <button id="serverIpIntlButton" type="button" class="rounded-[1.25rem] border border-brass/30 bg-white/8 px-4 py-3 text-left transition hover:border-brass/60 hover:bg-white/10">
+              <span id="serverIpIntlLabel" class="block text-xs uppercase tracking-[0.24em] text-slate-400">International</span>
+              <span class="mt-2 block text-sm font-semibold text-white">createaeronautics2.joinserver.xyz</span>
+            </button>
+          </div>
 
           <a id="modpackButton" href="https://drive.google.com/file/d/1_YZmyL5NKPxuoBgUlwOgrnoOOGX53Z1V/view" target="_blank" rel="noreferrer" class="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[1.5rem] border border-emerald-300/40 bg-gradient-to-r from-emerald-500/25 via-lime-400/20 to-emerald-400/15 px-5 py-4 text-base font-semibold text-emerald-50 transition hover:-translate-y-0.5 hover:border-emerald-300/70 hover:shadow-[0_0_0_1px_rgba(134,239,172,0.25),0_20px_50px_rgba(16,185,129,0.22)] sm:justify-start">
             <i data-lucide="download" aria-hidden="true" focusable="false" class="h-5 w-5 text-emerald-200"></i>
@@ -591,7 +602,9 @@
         step3Text: 'Open the game, join the server, and start building ships, machines, and hangars with the community.',
         serverInfoLabel: 'Server Info',
         serverInfoTitle: 'Click to copy your regional IP',
-        serverInfoText: 'Use the buttons below to get the modpack and connect. The site automatically shows the RU/CIS IP or the international IP so players can join with the right address for their region.',
+        serverInfoText: 'Choose the IP that matches your region, then copy it and join with the matching address.',
+        serverIpRuLabel: 'RU / CIS',
+        serverIpIntlLabel: 'International',
         modpackButtonText: 'Open Modpack',
         ipLabel: 'Minecraft Server IP',
         copyStatusText: 'Click to copy',
@@ -667,7 +680,9 @@
         step3Text: 'Открой игру, зайди на сервер и начинай строить корабли, машины и ангары вместе с комьюнити.',
         serverInfoLabel: 'Инфо сервера',
         serverInfoTitle: 'Нажми, чтобы скопировать свой региональный IP',
-        serverInfoText: 'Используй кнопки ниже, чтобы открыть модпак и подключиться. Сайт автоматически показывает IP для РФ/СНГ или международный IP, чтобы игроки подключались по подходящему адресу.',
+        serverInfoText: 'Выбери IP, который подходит твоему региону, затем скопируй его и подключайся по нужному адресу.',
+        serverIpRuLabel: 'РФ / СНГ',
+        serverIpIntlLabel: 'Международный',
         modpackButtonText: 'Открыть модпак',
         ipLabel: 'IP сервера Minecraft',
         copyStatusText: 'Нажми, чтобы скопировать',
@@ -738,9 +753,41 @@
       const langToggle = document.getElementById('langToggle');
       const langToggleText = document.getElementById('langToggleText');
       const modpackButton = document.getElementById('modpackButton');
+      const serverIpRuButton = document.getElementById('serverIpRuButton');
+      const serverIpIntlButton = document.getElementById('serverIpIntlButton');
       const serverIpRu = (siteConfig.serverIp || document.getElementById('serverIp').textContent.trim()).trim();
       const serverIpIntl = (siteConfig.serverIpIntl || 'createaeronautics2.joinserver.xyz').trim();
-      const serverIp = isCisLocale ? serverIpRu : serverIpIntl;
+      const serverIpOptions = {
+        ru: serverIpRu,
+        intl: serverIpIntl,
+      };
+      const storedServerChoice = localStorage.getItem('create-aeronautics-server-ip');
+      let activeServerKey = storedServerChoice === 'intl' || storedServerChoice === 'ru' ? storedServerChoice : (isCisLocale ? 'ru' : 'intl');
+      function getActiveServerIp() {
+        return serverIpOptions[activeServerKey] || serverIpOptions.ru;
+      }
+
+      function updateServerIpChoice(nextKey, persist = true) {
+        activeServerKey = nextKey === 'intl' ? 'intl' : 'ru';
+        if (persist) {
+          localStorage.setItem('create-aeronautics-server-ip', activeServerKey);
+        }
+
+        const activeIp = getActiveServerIp();
+        const serverIpEl = document.getElementById('serverIp');
+        if (serverIpEl) serverIpEl.textContent = activeIp;
+
+        if (serverIpRuButton && serverIpIntlButton) {
+          const activeButtonClass = 'border-emerald-300/70 bg-emerald-500/15 shadow-[0_0_0_1px_rgba(134,239,172,0.18)]';
+          const inactiveButtonClass = 'border-brass/30 bg-white/8';
+          serverIpRuButton.className = 'rounded-[1.25rem] px-4 py-3 text-left transition hover:border-brass/60 hover:bg-white/10 ' + (activeServerKey === 'ru' ? activeButtonClass : inactiveButtonClass);
+          serverIpIntlButton.className = 'rounded-[1.25rem] px-4 py-3 text-left transition hover:border-brass/60 hover:bg-white/10 ' + (activeServerKey === 'intl' ? activeButtonClass : inactiveButtonClass);
+        }
+
+        if (typeof refreshServerStatus === 'function') {
+          refreshServerStatus();
+        }
+      }
       let currentLanguage = selectedLanguage;
       let currentDictionary = translations[currentLanguage];
       window.__currentLanguage = currentLanguage;
@@ -762,8 +809,13 @@
 
         document.documentElement.lang = normalized;
         if (modpackButton && siteConfig.modpackUrl) modpackButton.setAttribute('href', siteConfig.modpackUrl);
-        const serverIpEl = document.getElementById('serverIp');
-        if (serverIpEl) serverIpEl.textContent = serverIp;
+        const serverInfoText = document.getElementById('serverInfoText');
+        if (serverInfoText) serverInfoText.textContent = currentDictionary.serverInfoText;
+        const serverIpRuLabel = document.getElementById('serverIpRuLabel');
+        const serverIpIntlLabel = document.getElementById('serverIpIntlLabel');
+        if (serverIpRuLabel) serverIpRuLabel.textContent = currentDictionary.serverIpRuLabel;
+        if (serverIpIntlLabel) serverIpIntlLabel.textContent = currentDictionary.serverIpIntlLabel;
+        updateServerIpChoice(activeServerKey, false);
         document.getElementById('pageTitle').textContent = currentDictionary.pageTitle;
         const pageDescription = document.getElementById('pageDescription');
         const ogDescription = document.querySelector('meta[property="og:description"]');
@@ -850,6 +902,7 @@
       }
 
       applyLanguage(selectedLanguage, false);
+      updateServerIpChoice(activeServerKey, false);
 
       const serverStatusDot = document.getElementById('serverStatusDot');
       const serverStatusText = document.getElementById('serverStatusText');
@@ -870,7 +923,7 @@
         setServerStatus('loading', currentDictionary.serverStatusLoading);
 
         try {
-          const target = serverIp.replace(/[^a-zA-Z0-9.:-]/g, '');
+          const target = getActiveServerIp().replace(/[^a-zA-Z0-9.:-]/g, '');
           const response = await fetch('https://api.mcsrvstat.us/3/' + target, { cache: 'no-store' });
           if (!response.ok) throw new Error('status request failed');
           const data = await response.json();
@@ -974,6 +1027,22 @@
           });
         }
 
+        const serverIpRuBtn = document.getElementById('serverIpRuButton');
+        if (serverIpRuBtn && typeof serverIpRuBtn.addEventListener === 'function') {
+          serverIpRuBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            updateServerIpChoice('ru', true);
+          });
+        }
+
+        const serverIpIntlBtn = document.getElementById('serverIpIntlButton');
+        if (serverIpIntlBtn && typeof serverIpIntlBtn.addEventListener === 'function') {
+          serverIpIntlBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            updateServerIpChoice('intl', true);
+          });
+        }
+
         // copy button binding
         const copyBtn = document.getElementById('copyButton');
         const copyStatusEl = document.getElementById('copyStatus');
@@ -981,7 +1050,7 @@
           copyBtn.addEventListener('click', async function(e){
             e.preventDefault();
             try{
-              await navigator.clipboard.writeText(serverIp);
+              await navigator.clipboard.writeText(getActiveServerIp());
               copyStatusEl.innerHTML = '<i data-lucide="check" class="h-4 w-4 text-brass"></i> <span id="copyStatusText">' + (document.documentElement.lang === 'ru' ? 'Скопировано!' : 'Copied!') + '</span>';
               if (window._reinitLucide) window._reinitLucide();
             }catch(err){
