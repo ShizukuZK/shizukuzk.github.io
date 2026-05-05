@@ -28,4 +28,4 @@ Or run the helper script:
 
 ## Links already in the page
 
-Modpack: https://drive.google.com/file/d/1_YZmyL5NKPxuoBgUlwOgrnoOOGX53Z1V/view
+Modpack: https://drive.google.com/file/d/1JBE_TQkqEYuR1DD3VTw9pE6JpdA3cObW/view?usp=sharing
