@@ -8,9 +8,9 @@
 
 ```json
 {
-  "modpackUrl": "https://drive.google.com/file/d/1JBE_TQkqEYuR1DD3VTw9pE6JpdA3cObW/view?usp=sharing",
+  "modpackUrl": "https://drive.google.com/file/d/1X5SAn2MqfRG3RAIl7IzzhFFrLazO-CHw/view?usp=drive_link",
   "serverIp": "play.createaeronautics.com",
-  "discordUrl": "https://discord.gg/xrxKm5GW",
+  "discordUrl": "https://discord.gg/y8as3d2J",
   "defaultLanguage": "en",
   "version": "1.0.0"
 }

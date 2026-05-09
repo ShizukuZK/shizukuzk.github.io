@@ -400,7 +400,7 @@
             </button>
           </div>
 
-          <a id="modpackButton" href="https://drive.google.com/file/d/1JBE_TQkqEYuR1DD3VTw9pE6JpdA3cObW/view?usp=sharing" target="_blank" rel="noreferrer" class="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[1.5rem] border border-emerald-300/40 bg-gradient-to-r from-emerald-500/25 via-lime-400/20 to-emerald-400/15 px-5 py-4 text-base font-semibold text-emerald-50 transition hover:-translate-y-0.5 hover:border-emerald-300/70 hover:shadow-[0_0_0_1px_rgba(134,239,172,0.25),0_20px_50px_rgba(16,185,129,0.22)] sm:justify-start">
+          <a id="modpackButton" href="https://drive.google.com/file/d/1X5SAn2MqfRG3RAIl7IzzhFFrLazO-CHw/view?usp=drive_link" target="_blank" rel="noreferrer" class="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[1.5rem] border border-emerald-300/40 bg-gradient-to-r from-emerald-500/25 via-lime-400/20 to-emerald-400/15 px-5 py-4 text-base font-semibold text-emerald-50 transition hover:-translate-y-0.5 hover:border-emerald-300/70 hover:shadow-[0_0_0_1px_rgba(134,239,172,0.25),0_20px_50px_rgba(16,185,129,0.22)] sm:justify-start">
             <i data-lucide="download" aria-hidden="true" focusable="false" class="h-5 w-5 text-emerald-200"></i>
             <span id="modpackButtonText">Open Modpack</span>
           </a>
@@ -467,7 +467,7 @@
           </div>
 
           <div class="flex flex-col gap-4 sm:flex-row lg:justify-end">
-            <a id="discordButton" href="https://discord.gg/xrxKm5GW" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 px-6 py-3.5 font-semibold text-slate-950 transition hover:scale-[1.02]">
+            <a id="discordButton" href="https://discord.gg/y8as3d2J" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 px-6 py-3.5 font-semibold text-slate-950 transition hover:scale-[1.02]">
               <i data-lucide="message-circle" aria-hidden="true" focusable="false" class="h-5 w-5"></i>
               <span id="discordButtonText">Join Discord</span>
             </a>
@@ -612,7 +612,7 @@
         discordText: 'Stay up to date, ask for support, share builds, and coordinate flights with other players in our Discord community.',
         discordButtonText: 'Join Discord',
         backToTopText: 'Back to top',
-        discordUrl: 'https://discord.gg/xrxKm5GW',
+        discordUrl: 'https://discord.gg/y8as3d2J',
         serverStatusLoading: 'Checking server status...',
         serverStatusOnline: 'Server online',
         serverStatusOffline: 'Server offline',
@@ -690,7 +690,7 @@
         discordText: 'Следи за обновлениями, проси помощь, делись постройками и координируй полеты с другими игроками в нашем Discord.',
         discordButtonText: 'Открыть Discord',
         backToTopText: 'Наверх',
-        discordUrl: 'https://discord.gg/xrxKm5GW',
+        discordUrl: 'https://discord.gg/y8as3d2J',
         serverStatusLoading: 'Проверяем статус сервера...',
         serverStatusOnline: 'Сервер онлайн',
         serverStatusOffline: 'Сервер офлайн',
@@ -701,15 +701,15 @@
     (async function(){
       async function loadSiteConfig(){
         const defaults = {
-          modpackUrl: 'https://drive.google.com/file/d/1JBE_TQkqEYuR1DD3VTw9pE6JpdA3cObW/view?usp=sharing',
+          modpackUrl: 'https://drive.google.com/file/d/1X5SAn2MqfRG3RAIl7IzzhFFrLazO-CHw/view?usp=drive_link',
           serverIp: 'createaeronautics.joinserver.xyz',
           serverIpIntl: 'createaeronautics2.joinserver.xyz',
-          discordUrl: 'https://discord.gg/xrxKm5GW',
+          discordUrl: 'https://discord.gg/y8as3d2J',
           defaultLanguage: 'en'
         };
 
         try {
-          const response = await fetch('/config.json?v=16', { cache: 'no-store' });
+          const response = await fetch('/config.json?v=18', { cache: 'no-store' });
           if (!response.ok) return defaults;
           const loaded = await response.json();
           return { ...defaults, ...loaded };
