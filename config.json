@@ -2,6 +2,7 @@
   "modpackUrl": "https://drive.google.com/file/d/172VJjeDATNDfdB-ZGHlpABHD6RleyPXO/view?usp=sharing",
   "serverIp": "createaeronautics.game-server.host",
   "discordUrl": "https://discord.gg/dF4FzaND",
-  "defaultLanguage": "en",
+  "testMode": true,
+  "defaultLanguage": "ru",
   "version": "1.0.2"
 }

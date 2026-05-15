@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Language" content="en, ru" />
   <title id="pageTitle">Create Aeronautics Minecraft Server | 1.21.1 NeoForge Create Mod</title>
-  <meta name="keywords" content="Create Aeronautics, Minecraft server, Minecraft сервер, 1.21.1, NeoForge, Create mod, Aeronautics, flight physics, airships, multiplayer, no griefing, server IP, Create Aeronautics server" />
-  <meta id="pageDescription" name="description" content="Join the Create Aeronautics Minecraft 1.21.1 NeoForge server with Create mod, Aeronautics, realistic flight physics, airships, a no-griefing community, and the server IP createaeronautics.game-server.host." />
+  <meta name="keywords" content="сервер майнкрафт, майнкрафт сервер 1.21.1, NeoForge, Create мод, Aeronautics, сервер Create Aeronautics, дирижабли, воздушные корабли, модпак, скачать модпак, нет грифа, российский майнкрафт сервер" />
+  <meta id="pageDescription" name="description" content="Create Aeronautics — сервер Minecraft 1.21.1 NeoForge с модами Create и Aeronautics: реалистичная физика полёта, дирижабли, инженерные сборки и дружелюбное комьюнити без грифа. Подключение: createaeronautics.game-server.host." />
   <meta name="author" content="Create Aeronautics" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#08110d" />
@@ -189,7 +189,7 @@
         <a href="#join" class="text-sm text-slate-300 transition hover:text-brass"><span id="navJoin">How to Join</span></a>
         <a href="#server-info" class="text-sm text-slate-300 transition hover:text-brass"><span id="navServerInfo">Server Info</span></a>
         <a href="#discord" class="text-sm text-slate-300 transition hover:text-brass"><span id="navDiscord">Discord</span></a>
-        <a id="navChangelog" class="text-sm text-slate-300 transition hover:text-brass" href="/changelog.html">Changelog</a>
+        <!-- Changelog removed from primary navigation (kept out of public nav) -->
       </nav>
 
       <div class="flex items-center gap-3">
@@ -214,6 +214,11 @@
           <div class="inline-flex items-center gap-3 rounded-full border border-brass/20 bg-white/5 px-4 py-2 text-sm text-slate-200 backdrop-blur-md">
             <span class="flex h-2.5 w-2.5 rounded-full bg-copper shadow-[0_0_16px_rgba(52,211,153,0.95)]"></span>
             <span id="heroBadgeText">1.21.1 NeoForge server • chill community • no griefing</span>
+          </div>
+
+          <div id="testModeBanner" class="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">
+            <i data-lucide="alert-triangle" aria-hidden="true" focusable="false" class="h-4 w-4 text-amber-300"></i>
+            <span id="testModeText">Preview build enabled</span>
           </div>
 
           <div class="space-y-5">
@@ -299,6 +304,44 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="highlights" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div class="mb-8 animated-fade">
+        <span id="highlightsLabel" class="section-label">Preview</span>
+        <h2 id="highlightsTitle" class="display-font mt-4 text-3xl font-bold uppercase text-white sm:text-4xl">What players notice first</h2>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="glass-panel info-card rounded-[1.75rem] p-6 sm:p-8">
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p id="highlight1Title" class="text-xs uppercase tracking-[0.24em] text-slate-400">Clear start</p>
+              <p id="highlight1Text" class="mt-2 text-sm leading-6 text-slate-300">The page immediately points players to the modpack, IP, and Discord without extra searching.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p id="highlight2Title" class="text-xs uppercase tracking-[0.24em] text-slate-400">Visible trust</p>
+              <p id="highlight2Text" class="mt-2 text-sm leading-6 text-slate-300">A live status block and friendly rules make the server feel active and safer to join.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p id="highlight3Title" class="text-xs uppercase tracking-[0.24em] text-slate-400">Test-friendly</p>
+              <p id="highlight3Text" class="mt-2 text-sm leading-6 text-slate-300">The preview banner makes it obvious this build is being checked before release.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel info-card rounded-[1.75rem] p-6 sm:p-8">
+          <p id="highlightAsideLabel" class="text-xs uppercase tracking-[0.24em] text-slate-400">Recommended next step</p>
+          <p id="highlightAsideTitle" class="display-font mt-4 text-2xl font-bold uppercase text-white">Open it on mobile and desktop</p>
+          <p id="highlightAsideText" class="mt-4 text-sm leading-7 text-slate-300">
+            Check the hero banner, the test-mode notice, the join button, and the server info block. If those feel clear, the page is ready for the next round.
+          </p>
+          <a href="#server-info" class="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-brass/30 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:border-brass/60 hover:bg-white/10">
+            <i data-lucide="rocket" aria-hidden="true" focusable="false" class="h-4 w-4 text-brass"></i>
+            <span id="highlightAsideButton">Go to server info</span>
+          </a>
         </div>
       </div>
     </section>
@@ -542,6 +585,7 @@
         navDiscord: 'Discord',
         navGetIp: 'Get IP',
         heroBadgeText: '1.21.1 NeoForge server • chill community • no griefing',
+        testModeText: 'Preview build enabled',
         heroTitle: 'Create Aeronautics',
         heroSubtitle: 'Build machines, master real flight physics, and rise above the clouds in a copper-toned world of airships, engines, and precision engineering.',
         heroJoinNow: 'Join Now',
@@ -552,6 +596,18 @@
         heroCard2Value: '1.21.1 NeoForge',
         heroCard3Label: 'Atmosphere',
         heroCard3Value: 'Chill, no griefing',
+        highlightsLabel: 'Preview',
+        highlightsTitle: 'What players notice first',
+        highlight1Title: 'Clear start',
+        highlight1Text: 'The page immediately points players to the modpack, IP, and Discord without extra searching.',
+        highlight2Title: 'Visible trust',
+        highlight2Text: 'A live status block and friendly rules make the server feel active and safer to join.',
+        highlight3Title: 'Test-friendly',
+        highlight3Text: 'The preview banner makes it obvious this build is being checked before release.',
+        highlightAsideLabel: 'Recommended next step',
+        highlightAsideTitle: 'Open it on mobile and desktop',
+        highlightAsideText: 'Check the hero banner, the test-mode notice, the join button, and the server info block. If those feel clear, the page is ready for the next round.',
+        highlightAsideButton: 'Go to server info',
         signalLabel: 'Signal',
         signalTitle: 'Industrial Flight Control',
         feature1Title: 'Real lift and thrust',
@@ -619,6 +675,7 @@
         navDiscord: 'Discord',
         navGetIp: 'Скопировать IP',
         heroBadgeText: 'Сервер 1.21.1 NeoForge • спокойное комьюнити • без грифа',
+        testModeText: 'Включен тестовый режим',
         heroTitle: 'Create Aeronautics — Лучший Minecraft Сервер с Create и Aeronautics',
         heroSubtitle: 'Строй механизмы, управляй настоящей физикой полета и поднимайся над облаками в индустриальном мире из меди, латуни и стали.',
         heroJoinNow: 'Зайти на сервер',
@@ -629,6 +686,18 @@
         heroCard2Value: '1.21.1 NeoForge',
         heroCard3Label: 'Атмосфера',
         heroCard3Value: 'Спокойно, без грифа',
+        highlightsLabel: 'Превью',
+        highlightsTitle: 'Что игроки замечают сразу',
+        highlight1Title: 'Понятный старт',
+        highlight1Text: 'Страница сразу ведет к модпаку, IP и Discord без лишних поисков.',
+        highlight2Title: 'Видимое доверие',
+        highlight2Text: 'Блок статуса и дружелюбные правила делают сервер более живым и безопасным.',
+        highlight3Title: 'Удобно для теста',
+        highlight3Text: 'Баннер превью показывает, что этот билд проверяют перед релизом.',
+        highlightAsideLabel: 'Рекомендуемый следующий шаг',
+        highlightAsideTitle: 'Открой на телефоне и на ПК',
+        highlightAsideText: 'Проверь баннер hero, тестовый режим, кнопку входа и блок с серверной информацией. Если все читается ясно, страницу можно дальше доводить.',
+        highlightAsideButton: 'К серверной информации',
         signalLabel: 'Сигнал',
         signalTitle: 'Индустриальное управление полетом',
         feature1Title: 'Реальная подъемная сила',
@@ -693,6 +762,7 @@
           modpackUrl: 'https://drive.google.com/file/d/172VJjeDATNDfdB-ZGHlpABHD6RleyPXO/view?usp=sharing',
           serverIp: 'createaeronautics.game-server.host',
           discordUrl: 'https://discord.gg/dF4FzaND',
+          testMode: false,
           defaultLanguage: 'en'
         };
 
@@ -795,10 +865,17 @@
         document.getElementById('navServerInfo').textContent = currentDictionary.navServerInfo;
         const navDiscord = document.getElementById('navDiscord');
         if (navDiscord) navDiscord.textContent = currentDictionary.navDiscord;
-        document.getElementById('navChangelog').textContent = currentDictionary.navChangelog || 'Changelog';
-        document.getElementById('navChangelog').setAttribute('href', '/changelog.html?lang=' + normalized);
+        const navChangelogEl = document.getElementById('navChangelog');
+        if (navChangelogEl) {
+          navChangelogEl.textContent = currentDictionary.navChangelog || 'Changelog';
+          navChangelogEl.setAttribute('href', '/changelog.html?lang=' + normalized);
+        }
         document.getElementById('navGetIp').textContent = currentDictionary.navGetIp;
         document.getElementById('heroBadgeText').textContent = currentDictionary.heroBadgeText;
+        const testModeBanner = document.getElementById('testModeBanner');
+        const testModeText = document.getElementById('testModeText');
+        if (testModeBanner) testModeBanner.classList.toggle('hidden', !siteConfig.testMode);
+        if (testModeText) testModeText.textContent = currentDictionary.testModeText;
         document.getElementById('heroTitle').textContent = currentDictionary.heroTitle;
         document.getElementById('heroSubtitle').textContent = currentDictionary.heroSubtitle;
         document.getElementById('heroJoinNow').textContent = currentDictionary.heroJoinNow;
@@ -809,6 +886,18 @@
         document.getElementById('heroCard2Value').textContent = currentDictionary.heroCard2Value;
         document.getElementById('heroCard3Label').textContent = currentDictionary.heroCard3Label;
         document.getElementById('heroCard3Value').textContent = currentDictionary.heroCard3Value;
+        document.getElementById('highlightsLabel').textContent = currentDictionary.highlightsLabel;
+        document.getElementById('highlightsTitle').textContent = currentDictionary.highlightsTitle;
+        document.getElementById('highlight1Title').textContent = currentDictionary.highlight1Title;
+        document.getElementById('highlight1Text').textContent = currentDictionary.highlight1Text;
+        document.getElementById('highlight2Title').textContent = currentDictionary.highlight2Title;
+        document.getElementById('highlight2Text').textContent = currentDictionary.highlight2Text;
+        document.getElementById('highlight3Title').textContent = currentDictionary.highlight3Title;
+        document.getElementById('highlight3Text').textContent = currentDictionary.highlight3Text;
+        document.getElementById('highlightAsideLabel').textContent = currentDictionary.highlightAsideLabel;
+        document.getElementById('highlightAsideTitle').textContent = currentDictionary.highlightAsideTitle;
+        document.getElementById('highlightAsideText').textContent = currentDictionary.highlightAsideText;
+        document.getElementById('highlightAsideButton').textContent = currentDictionary.highlightAsideButton;
         document.getElementById('signalLabel').textContent = currentDictionary.signalLabel;
         document.getElementById('signalTitle').textContent = currentDictionary.signalTitle;
         document.getElementById('feature1Title').textContent = currentDictionary.feature1Title;
