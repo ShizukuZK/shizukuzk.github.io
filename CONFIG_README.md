@@ -8,7 +8,7 @@
 
 ```json
 {
-  "modpackUrl": "https://drive.google.com/file/d/172VJjeDATNDfdB-ZGHlpABHD6RleyPXO/view?usp=sharing",
+  "modpackUrl": "https://drive.google.com/file/d/1WdW6qKREPYzUp-S1iFKNhs5Vq2xQhsxB/view?usp=sharing",
   "serverIp": "createaeronautics.game-server.host",
   "discordUrl": "https://discord.gg/dF4FzaND",
   "defaultLanguage": "en",
